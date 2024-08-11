@@ -11,6 +11,7 @@ html {
   font-size: 16px;
 }
 
+/**************************  CSS for Landing page  ********************************/
 .main-content {
   position: relative;
   top: 5.3125rem; /* To offset for fixed header. */
@@ -38,6 +39,7 @@ html {
 
   max-width: 100%;
 }
+
 
 /* Header */
 
@@ -77,7 +79,7 @@ nav a {
   vertical-align: bottom;
   line-height: 1.6;
   font-size: 1rem;
-  color: #4a4a4a;
+  color: var(--text-dark);
 }
 
 header .icon {
@@ -114,6 +116,7 @@ header .mobile {
   /* border: solid 1px #979797; */
   border-radius: 4px;
   background-color: #f3f3f3;
+  border-radius: 1rem;
 }
 
 #sign-up-cta .content {
@@ -165,7 +168,8 @@ header .mobile {
   flex: 1;
   padding: 2rem;
   margin: 0 1.25rem;
-  background-color: white;
+  background-color: var(--primary-color);
+  border-radius: 1rem;
 }
 
 .feature .image-container {
@@ -174,6 +178,10 @@ header .mobile {
   margin: 0 auto;  
   /* added padding to the bottom of the images in the features section for a cleaner look*/
   padding-bottom: 30px;
+}
+
+.feature .image-container img {
+  border-radius: 1rem;
 }
 
 .feature h2 {
@@ -194,7 +202,7 @@ header .mobile {
 
 #filters-section {
   padding: 4rem 0;
-  background-color: #4a4a4a;
+  background-color: var(--text-dark);
 }
 
 #filters-section .content {
@@ -206,6 +214,7 @@ header .mobile {
   font-size: 2.25rem;
   font-weight: bold;
   color: white;
+  padding: 2rem;
 }
 
 #filters-section .content h3 {
@@ -219,9 +228,14 @@ header .mobile {
 
   /* made the images container's display flex in the filters section */
   display: flex;
-
   max-width: 100%;
   padding: 0 1%;
+}
+
+.images-container img {
+  height: 400px;
+  width: 400px;
+  object-fit: cover;
 }
 
 /* Quotes Section */
@@ -251,7 +265,7 @@ header .mobile {
 
 /* added a period before the quote-citation to render proper styles for the the quote*/
 #quotes-section .quote-citation {
-  height: 1.875rem;
+  height: 4rem;
 }
 
 /* Footer */
@@ -290,7 +304,7 @@ footer .copyright {
 }
 
 /***************************** All styles for 760px screens **************************************** */
-/* only one media query for 760px screen (go all the way down for comments about other 760px screen media queries)*/
+/* only one media query for 760px screen*/
 @media only screen and (max-width: 760px) {
 
   /* header section */
@@ -335,7 +349,7 @@ footer .copyright {
   #sign-up-cta {
 
     /* changes the margin to auto for the sign-up section when the screen size is smaller. 
-    This will cause the text 'Instant Format Camera' in the sign-up section to be in the center 
+    This will cause the text 'Prism Jewellery' in the sign-up section to be in the center 
     of the screen when the screen size is reduced  */ 
     margin: auto;
 
@@ -455,128 +469,100 @@ footer .copyright {
   }
 }
 
-/*************************************************************************************************************
-                                                                                                             *
-All the code for 760px screens and smaller is below. Codecademy originally created separate sections         *
-for 760px screens in each section (a media query in the header section for a 760px screen header section,    *
-then another media query in the sign up section for a 760px screen sign up section, etc.), therefore there   *
-were many 760px media queries (as can be seen below) so I took al tthis code and put it in one 760px media   *
-query in th right order (header, sign-up, main, etc.). This made things very easy for me to understand and   *
-the code became readable for me. Otherwise it was too confusing.                                             *
-                                                                                                             *
-**************************************************************************************************************/ 
 
-/* @media only screen and (max-width: 760px) {
-  .main-content {
-    top: 2.5625rem;
-  }
-} */
-/* @media only screen and (min-width: 760px) {
-  footer .content {
+/********************** CSS for Login page ****************************/
+.login-container {
+  padding: 10rem;
+  margin: 0;
+  box-sizing: border-box;
+  background-image: url("../images/login-background-3.jpg");
+  background-size: cover;
+  height: 100vh;
+  overflow: hidden;
+}
 
-    changed the font-size to 12px 
-    font-size: 12px;
+.centere {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 10px 10px 15px rgba(0,0,0,0.05);
+}
 
-  } 
-} */
-/*@media only screen and (max-width: 760px) {
-  #quotes-section content {
-    padding: 1.875rem .625rem;
-  }
+.centere h1 {
+  text-align: center;
+  padding: 20px 0;
+  border-bottom: 1px solid silver;
+  font-size: 200%;
+  font-weight: bold;
+}
 
-  /* added a period before the quote to render proper styles for the the quote
-  #quotes-section .quote {
-    font-size: 1.5rem;
-    line-height: 1.4;
-  }
+.centere form {
+  padding: 0 40px;
+  box-sizing: border-box;
+}
 
-  /* added a period before the quote-citation to render proper styles for the the quote
-  #quotes-section .quote-citation {
-    display: block;
-    padding-top: 1rem;
-    margin: auto;
-  }
-} */
-/* added this section to the bottom where there's another 
-media query (line 335) targeting the same screen max-width of 760px */
+form .txt_field {
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin: 30px 0;
+}
 
-/*@media only screen and (max-width: 760px) {
-  #features-section {
-    flex-flow: column;
-    padding: 0;
-  }
+.txt_field input {
+  width: 100%;
+  padding: 0 5px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  background: none;
+  outline: none;
+}
 
-  .feature {
-    margin: 0;
-    padding: 1.25rem 1rem 0 1rem;
-  }
-} */
-/* @media only screen and (max-width: 760px) {
-  #sign-up-section {
-    align-items: center;
-    justify-content: center;
-    height: 28rem;
-  }
+.pass {
+  margin: -5px 0 20px 5px;
+  color: #a6a6a6;
+  cursor: pointer;
+}
 
-  #sign-up-cta {
+.pass:hover {
+  text-decoration: underline;
+}
 
-    /* changes the margin to auto for the sign-up section when the screen size is smaller. 
-    This will cause the text 'Instant Format Camera' in the sign-up section to be in the center 
-    of the screen when the screen size is reduced  
-    margin: auto;
+input[type="submit"] {
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: var(--text-dark);
+  border-radius: 25px;
+  font-size: 18px;
+  color: var(--primary-color);
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
 
-    position: static;
-    width: auto;
-    height: auto;
-    background-color: transparent;
-    border: none;
-  }
+input[type="submit"]:hover {
+  background-color: var(--primary-color);
+  color: var(--text-dark);
+  border-color: var(--text-dark);
+  transition: 0.5s;
+}
 
-  #sign-up-cta .content {
-    margin-top: 0;
-  }
+.singup_link {
+  margin: 30px 0;
+  text-align: center;
+  font-size: 16px;
+  color: #666666;
+}
 
-  #sign-up-cta .email {
-    display: none;
-  }
+.singup_link a {
+  color: #2691d9;
+  text-decoration: none;
+}
 
-  #sign-up-cta h1 {
-    font-size: 3.125rem;
-  }
-
-  #sign-up-cta h2 {
-    font-size: 2.25rem;
-  }
-} */
-/* @media only screen and (max-width: 760px) {
-  header .desktop {
-    display: none;
-  }
-
-  header .mobile {
-    display: block;
-    width: 100%;
-  }
-
-  header .content {
-    padding: .5rem 0;
-  }
-
-  header .mobile ul {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-  }
-
-  header .mobile li {
-    padding: 0;
-  }
-
-  header .mobile .button {
-    padding: .1875rem .5rem;
-    background-color: #9dc20b;
-    line-height: 1.6;
-    color: white;
-  }
-} */
+.singup_link a:hover {
+  text-decoration: underline;
+}
