@@ -1,14 +1,15 @@
 // Wait for the DOM to be fully loaded before running the script
 document.addEventListener('DOMContentLoaded', function() {
     // Email form submission in the sign-up section
+    // Email form submission in the sign-up section
     const emailButton = document.querySelector('#sign-up-cta .button');
     if (emailButton) {
         emailButton.addEventListener('click', function(e) {
             e.preventDefault();
             const email = prompt("Please enter your email address:");
             if (email) {
+                saveEmailToXML(email);
                 alert(`Thank you! We've added ${email} to our waiting list for the Doorstep Tryout facility.`);
-                // Here you would typically send this to a server
             }
         });
     }
@@ -88,3 +89,18 @@ document.addEventListener('DOMContentLoaded', function() {
         quotesSection.appendChild(clickInstruction);
     }
 });
+
+function saveEmailToXML(email) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'save-email.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            console.log('Email saved to XML file!');
+        }
+    };
+
+    const data = `email=${encodeURIComponent(email)}`;
+    xhr.send(data);
+}

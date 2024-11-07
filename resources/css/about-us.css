@@ -1,0 +1,83 @@
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: #000;
+    padding-top: 80px;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url('../images/about-us.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Header styles */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #fff;
+}
+
+/* About section styles */
+.about-section {
+    text-align: center;
+    padding: 40px 20px;
+    width: 90%;
+    max-width: 900px;
+    margin: 50px auto;
+}
+
+.about-section h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.about-section .intro-text {
+    font-size: 1.2em;
+    margin: 20px 0;
+    color: #333;
+    font-style: italic;
+}
+
+.about-section h2 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 30px;
+    color: #333;
+}
+
+.about-section .main-text {
+    font-size: 1.1em;
+    margin: 20px auto;
+    line-height: 1.6;
+    color: #444;
+    width: 90%;
+    max-width: 700px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .about-section {
+        padding: 30px 15px;
+    }
+    
+    .about-section h1 {
+        font-size: 2em;
+    }
+    
+    .about-section h2 {
+        font-size: 1.6em;
+    }
+    
+    .about-section .main-text {
+        width: 100%;
+    }
+}
