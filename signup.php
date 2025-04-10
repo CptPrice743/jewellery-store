@@ -2,7 +2,7 @@
 // Database connection details
 $servername = "localhost";
 $username = "root";
-$password = "1234";
+$password = "vyom0403";
 $dbname = "jewellery_store";
 
 // Create connection

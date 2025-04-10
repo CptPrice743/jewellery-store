@@ -2,7 +2,7 @@
 // Database connection details
 $servername = "localhost";
 $username = "root";
-$password = "1234";
+$password = "vyom0403";
 $dbname = "jewellery_store";
 
 // Create connection
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $loginSuccess = true;
-            header("Location: store.html");
+            header("Location: store.php");
             exit();
         } else {
             $loginErr = "Invalid email or password";
@@ -82,17 +82,17 @@ function inputData($data)
 <body>
     <header>
         <div class="content">
-            <a href="index.html" class="desktop logo" href="./index.html">Prism Jewellery</a>
+            <a href="index.php" class="desktop logo" href="./index.php">Prism Jewellery</a>
             <nav class="desktop">
                 <ul>
-                    <li><a href="./about-us.html">About us</a></li>
+                    <li><a href="./about-us.php">About us</a></li>
                     <li><a href="https://www.instagram.com/">Follow us</a></li>
                 </ul>
             </nav>
             <nav class="mobile">
                 <ul>
-                    <li><a href="./index.html">Prism Jewellery</a></li>
-                    <li><a href="./about-us.html">About Us</a></li>
+                    <li><a href="./index.php">Prism Jewellery</a></li>
+                    <li><a href="./about-us.php">About Us</a></li>
                     <li><a href="https://www.instagram.com/">Follow Us</a></li>
                 </ul>
             </nav>

@@ -32,7 +32,6 @@ html {
 }
 
 .image-container img {
-
   /* made the images themselves in the imgae-container to be inline-flex so they can 
   display on the same line*/
   display: inline-flex;
@@ -40,13 +39,12 @@ html {
   max-width: 100%;
 }
 
-
 /* Header */
 
 header {
   position: fixed;
 
-  /* added z-index so the header always stay in the front*/ 
+  /* added z-index so the header always stay in the front*/
   z-index: 1;
   width: 100%;
   border-bottom: solid 1px #c6c1c1;
@@ -84,7 +82,7 @@ nav a {
 
 header .icon {
   width: 1rem;
-  padding-left: .75rem;
+  padding-left: 0.75rem;
 }
 
 header .mobile {
@@ -100,7 +98,7 @@ header .mobile {
   align-items: flex-start;
   height: 43.5rem;
 
-  /* added the background image to the sign-up container*/ 
+  /* added the background image to the sign-up container*/
   background-image: url(../images/banner-landingpage.jpg);
   background-position: bottom;
   background-size: cover;
@@ -108,7 +106,6 @@ header .mobile {
 }
 
 #sign-up-cta {
-
   /* added the margin to the sign up container*/
   margin: auto 10rem auto 5rem;
 
@@ -146,7 +143,7 @@ header .mobile {
 
 #sign-up-cta .striking {
   font-family: "Playfair Display", serif;
-  padding-bottom: .75rem;
+  padding-bottom: 0.75rem;
 }
 
 #sign-up-cta .button {
@@ -175,7 +172,7 @@ header .mobile {
 .feature .image-container {
   width: 90%;
   height: 65%;
-  margin: 0 auto;  
+  margin: 0 auto;
   /* added padding to the bottom of the images in the features section for a cleaner look*/
   padding-bottom: 30px;
 }
@@ -185,7 +182,7 @@ header .mobile {
 }
 
 .feature h2 {
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
   font-size: 2.25rem;
   font-weight: bold;
   color: #4a4a4a;
@@ -206,7 +203,7 @@ header .mobile {
 }
 
 #filters-section .content {
-  padding: 0 .625rem;
+  padding: 0 0.625rem;
   margin-bottom: 5rem;
 }
 
@@ -225,7 +222,6 @@ header .mobile {
 }
 
 #filters-section .images-container {
-
   /* made the images container's display flex in the filters section */
   display: flex;
   max-width: 100%;
@@ -241,7 +237,6 @@ header .mobile {
 /* Quotes Section */
 
 #quotes-section {
-
   /* added top and bottom padding to the quote section for a better look*/
   padding-top: 5rem;
   padding-bottom: 5rem;
@@ -281,7 +276,7 @@ footer {
 footer .content {
   color: white;
   display: flex;
-  font-family: 'Roboto';
+  font-family: "Roboto";
 }
 
 footer .copyright {
@@ -306,7 +301,6 @@ footer .copyright {
 /***************************** All styles for 760px screens **************************************** */
 /* only one media query for 760px screen*/
 @media only screen and (max-width: 760px) {
-
   /* header section */
   header .desktop {
     display: none;
@@ -318,7 +312,7 @@ footer .copyright {
   }
 
   header .content {
-    padding: .5rem 0;
+    padding: 0.5rem 0;
   }
 
   header .mobile ul {
@@ -333,7 +327,7 @@ footer .copyright {
   }
 
   header .mobile .button {
-    padding: .1875rem .5rem;
+    padding: 0.1875rem 0.5rem;
     background-color: var(--text-dark);
     line-height: 1.6;
     color: var(--primary-color);
@@ -347,10 +341,9 @@ footer .copyright {
   }
 
   #sign-up-cta {
-
     /* changes the margin to auto for the sign-up section when the screen size is smaller. 
     This will cause the text 'Prism Jewellery' in the sign-up section to be in the center 
-    of the screen when the screen size is reduced  */ 
+    of the screen when the screen size is reduced  */
     margin: auto;
 
     position: static;
@@ -404,19 +397,19 @@ footer .copyright {
   }
 
   #filters-section .content h2 {
-    padding-bottom: .625rem;
+    padding-bottom: 0.625rem;
     font-size: 1.125rem;
     line-height: 1.3;
     font-weight: normal;
   }
 
   #filters-section .content h3 {
-    font-size: .875rem;
+    font-size: 0.875rem;
     line-height: 1.4;
   }
 
   #filters-section .images-container {
-    /* added a 1rem padding to the bottom of the features sections for a better, more consistent look*/ 
+    /* added a 1rem padding to the bottom of the features sections for a better, more consistent look*/
     padding-bottom: 1rem;
   }
 
@@ -445,13 +438,11 @@ footer .copyright {
     padding-top: 1rem;
     margin: auto;
   }
-  
+
   /* footer section */
   footer .content {
-
     /* changed the font-size to 10px when the screen size is small */
     font-size: 10px;
-
   }
 }
 
@@ -464,11 +455,10 @@ footer .copyright {
   }
 
   .feature h3 {
-    font-size: .875rem;
+    font-size: 0.875rem;
     line-height: 1.4;
   }
 }
-
 
 /********************** CSS for Login page ****************************/
 .login-container {
@@ -489,7 +479,7 @@ footer .copyright {
   width: 400px;
   background: white;
   border-radius: 10px;
-  box-shadow: 10px 10px 15px rgba(0,0,0,0.05);
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
 }
 
 .centere h1 {
@@ -565,4 +555,126 @@ input[type="submit"]:hover {
 
 .singup_link a:hover {
   text-decoration: underline;
+}
+
+/* Add padding to account for fixed header */
+.store-container,
+.cart-container,
+.login-container, /* Added for login/signup pages */
+.about-section,    /* Added for about us page */
+.confirmation-container /* Added for confirmation page */ {
+  padding-top: 7rem; /* Adjust this value slightly if needed based on exact header height */
+}
+
+/* Ensure body allows for footer positioning */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Make main content area flexible */
+.store-container,
+.cart-container,
+.login-container,
+.about-section,
+.confirmation-container,
+.main-content /* Target homepage main content too */ {
+  flex-grow: 1;
+}
+
+/* Style for the tick mark shown after adding to cart */
+.added-tick {
+  color: #28a745; /* Green color for success */
+  font-weight: bold;
+  margin-left: 8px; /* Space between button and tick */
+  font-size: 1.1em; /* Make tick slightly larger */
+  /* Prevents the tick from wrapping unexpectedly */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Optional: Style for the button when disabled */
+.add-to-cart-btn:disabled {
+  background-color: #ccc; /* Grey out disabled button */
+  cursor: not-allowed;
+}
+
+/* Container for button OR quantity selector */
+.cart-interaction {
+  margin-top: auto; /* Pushes button to the bottom IF the card has extra space */
+}
+
+/* Styles for the quantity selector: - 1 + */
+.quantity-selector {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 0.5rem; /* Ensure consistent spacing */
+}
+
+.quantity-selector button {
+  background-color: #f8f8f8;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0.5rem 0.9rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.quantity-selector button:hover {
+  background-color: #eee;
+}
+
+.quantity-selector .qty-display {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  min-width: 25px;
+  text-align: center;
+  font-weight: bold;
+  background-color: var(--text-dark);
+  color: var(--primary-color);
+}
+
+/* .qty-display {
+  
+} */
+
+.quantity-selector .minus-btn {
+  /* border-right: 1px solid #ccc; Separator line */
+  border-radius: 4px 0 0 4px; /* Round left corners */
+}
+
+.quantity-selector .plus-btn {
+  /* border-left: 1px solid #ccc; Separator line */
+  border-radius: 0 4px 4px 0; /* Round right corners */
+}
+
+/* Ensure original button aligns well */
+.add-to-cart-btn {
+  display: inline-block; /* Make it inline-block */
+  padding: 0.6rem 1.2rem; /* Adjust padding */
+  background-color: var(--text-dark);
+  color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  width: auto; /* Adjust width automatically */
+  margin-top: 0.5rem; /* Ensure some space above the button */
+}
+
+.add-to-cart-btn:hover {
+  background-color: #555; /* Darken hover color */
+}
+
+
+/* Optional: Indicate processing */
+.cart-interaction.processing * {
+  opacity: 0.5;
+  pointer-events: none; /* Prevent clicks during processing */
 }
