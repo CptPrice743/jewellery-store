@@ -1,79 +1,169 @@
 <?php
-session_start();
+session_start(); // ADD THIS LINE
 
-// Initialize cart if it doesn't exist
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
+// Database connection details (needed regardless of login status for fetching count later if needed)
+$servername = "localhost"; $username = "root"; $password = "vyom0403"; $dbname = "jewellery_store";
 
 $response = ['success' => false, 'message' => '', 'cart_count' => 0];
+$loggedIn = isset($_SESSION['user_id']);
+$userId = $loggedIn ? $_SESSION['user_id'] : null;
 
-// Check if product_id is provided (for adding items)
-if (isset($_POST['action']) && $_POST['action'] == 'add' && isset($_POST['product_id'])) {
-    $productId = (int)$_POST['product_id'];
-    $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+// Determine target cart (session or database)
+// Note: Session cart is primarily for non-logged-in users now
+if (!isset($_SESSION['cart'])) {
+     $_SESSION['cart'] = []; // Initialize session cart if not set
+}
+$cart = &$_SESSION['cart']; // Reference session cart for non-logged-in users
 
-    if ($quantity < 1) $quantity = 1; // Ensure quantity is at least 1
+$productId = isset($_POST['product_id']) ? (int)$_POST['product_id'] : null;
+$quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : null; // Can be 0 for removal
+$action = isset($_POST['action']) ? $_POST['action'] : null; // 'add', 'update', 'remove'
 
-    // --- Optional: Check product existence and stock in DB ---
-    // $servername = "localhost"; $username = "root"; $password = "1234"; $dbname = "jewellery_store";
-    // $conn = new mysqli($servername, $username, $password, $dbname);
-    // $stmt = $conn->prepare("SELECT stock FROM products WHERE product_id = ?");
-    // $stmt->bind_param("i", $productId); $stmt->execute(); $result = $stmt->get_result();
-    // if ($result->num_rows > 0) { $product = $result->fetch_assoc(); } else { /* Handle error */ }
-    // $conn->close();
-    // if ($product['stock'] < $quantity) { /* Handle insufficient stock */ }
-    // --- End Optional DB Check ---
+// --- Basic Input Validation ---
+if ($productId === null || $action === null) {
+    $response['message'] = 'Missing product ID or action.';
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if (($action == 'update' || $action == 'add') && $quantity === null) {
+     $response['message'] = 'Missing quantity for add/update action.';
+     header('Content-Type: application/json');
+     echo json_encode($response);
+     exit();
+}
+if (($action == 'update' || $action == 'add') && (!is_numeric($quantity) || $quantity < 0)) {
+    $response['message'] = 'Invalid quantity provided.';
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+// --- End Basic Input Validation ---
 
-    // Add or update product in cart session
-    if (isset($_SESSION['cart'][$productId])) {
-        $_SESSION['cart'][$productId]['quantity'] += $quantity;
-    } else {
-        // You might want to fetch product details (name, price) here if needed later on cart page
-        $_SESSION['cart'][$productId] = ['quantity' => $quantity];
+
+// --- Database Interaction Functions ---
+function updateDatabaseCart($conn, $userId, $productId, $newQuantity) {
+    if ($newQuantity > 0) {
+        $stmt = $conn->prepare("
+            INSERT INTO user_carts (user_id, product_id, quantity) VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE quantity = ?
+        ");
+         if (!$stmt) return false; // Prepare failed
+        $stmt->bind_param("iiii", $userId, $productId, $newQuantity, $newQuantity);
+    } else { // Quantity <= 0 means remove
+        $stmt = $conn->prepare("DELETE FROM user_carts WHERE user_id = ? AND product_id = ?");
+         if (!$stmt) return false; // Prepare failed
+        $stmt->bind_param("ii", $userId, $productId);
     }
+    $success = $stmt->execute();
+    $stmt->close();
+    return $success;
+}
 
-    $response['success'] = true;
-    $response['message'] = 'Item added to cart!';
+function getDatabaseCartCount($conn, $userId) {
+    $totalItems = 0;
+    $stmt = $conn->prepare("SELECT SUM(quantity) as total FROM user_carts WHERE user_id = ?");
+    if ($stmt) { // Check prepare success
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $totalItems = $result['total'] ?? 0;
+        $stmt->close();
+    }
+    return $totalItems;
+}
 
-} elseif (isset($_POST['action']) && $_POST['action'] == 'update' && isset($_POST['product_id']) && isset($_POST['quantity'])) {
-     $productId = (int)$_POST['product_id'];
-     $quantity = (int)$_POST['quantity'];
-
-     if ($quantity > 0) {
-         if (isset($_SESSION['cart'][$productId])) {
-             $_SESSION['cart'][$productId]['quantity'] = $quantity;
-             $response['success'] = true;
-             $response['message'] = 'Cart updated.';
-         } else {
-              $response['message'] = 'Item not found in cart.';
-         }
-     } else {
-         // Remove item if quantity is 0 or less
-         unset($_SESSION['cart'][$productId]);
-         $response['success'] = true;
-         $response['message'] = 'Item removed from cart.';
+function getProductQuantityFromDb($conn, $userId, $productId) {
+     $currentQuantity = 0;
+     $stmt = $conn->prepare("SELECT quantity FROM user_carts WHERE user_id = ? AND product_id = ?");
+     if ($stmt) {
+        $stmt->bind_param("ii", $userId, $productId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+             $currentQuantity = $result->fetch_assoc()['quantity'];
+        }
+        $stmt->close();
      }
+     return $currentQuantity;
+}
+// --- End Database Interaction Functions ---
 
-} elseif (isset($_POST['action']) && $_POST['action'] == 'remove' && isset($_POST['product_id'])) {
-    $productId = (int)$_POST['product_id'];
-    if (isset($_SESSION['cart'][$productId])) {
-        unset($_SESSION['cart'][$productId]);
+
+// --- Main Logic ---
+if ($loggedIn) {
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        $response['message'] = 'Database connection error.';
+    } else {
+        $newQuantity = 0; // Initialize
+        $dbSuccess = false; // Flag for DB operation result
+
+        if ($action == 'add') {
+            // Quantity for 'add' action usually means adding 1 item
+             $currentQuantity = getProductQuantityFromDb($conn, $userId, $productId);
+             $newQuantity = $currentQuantity + 1;
+             $dbSuccess = updateDatabaseCart($conn, $userId, $productId, $newQuantity);
+             if ($dbSuccess) $response['message'] = 'Item added to cart!';
+
+        } elseif ($action == 'update') {
+             // Quantity is explicitly provided by the request
+             $newQuantity = $quantity;
+             $dbSuccess = updateDatabaseCart($conn, $userId, $productId, $newQuantity);
+              if ($dbSuccess) $response['message'] = $newQuantity > 0 ? 'Cart updated.' : 'Item removed from cart.';
+
+        } elseif ($action == 'remove') {
+             // Explicitly remove the item (set quantity to 0 in DB or DELETE)
+             $newQuantity = 0;
+             $dbSuccess = updateDatabaseCart($conn, $userId, $productId, $newQuantity);
+             if ($dbSuccess) $response['message'] = 'Item removed from cart.';
+        }
+
+        // Set response based on DB operation result
+        if ($dbSuccess) {
+            $response['success'] = true;
+            $response['cart_count'] = getDatabaseCartCount($conn, $userId); // Update count
+        } else {
+            $response['message'] = $response['message'] ?: 'Failed to update database cart.'; // Keep specific message if set, otherwise generic fail
+        }
+
+        $conn->close();
+    }
+} else {
+    // --- Session Cart Logic (for non-logged-in users) ---
+    // Note: 'add' action here might receive quantity=1 from cart.js
+    if ($action == 'add') {
+         $currentQuantity = isset($cart[$productId]['quantity']) ? $cart[$productId]['quantity'] : 0;
+         $cart[$productId] = ['quantity' => $currentQuantity + 1]; // Always add 1 for 'add'
+         $response['success'] = true;
+         $response['message'] = 'Item added to cart!';
+    } elseif ($action == 'update') {
+         if ($quantity > 0) {
+              // Update quantity or add if not present (though typically updated from cart page)
+              $cart[$productId] = ['quantity' => $quantity];
+              $response['success'] = true;
+              $response['message'] = 'Cart updated.';
+         } else {
+              // Remove if quantity is 0 or less
+              unset($cart[$productId]);
+              $response['success'] = true;
+              $response['message'] = 'Item removed from cart.';
+         }
+    } elseif ($action == 'remove') {
+        unset($cart[$productId]);
         $response['success'] = true;
         $response['message'] = 'Item removed from cart.';
     } else {
-         $response['message'] = 'Item not found in cart.';
+        $response['message'] = 'Invalid action for session cart.';
     }
+
+    // Calculate total items in session cart
+    $totalItems = 0;
+    foreach ($cart as $item) { $totalItems += $item['quantity']; }
+    $response['cart_count'] = $totalItems;
 }
 
-// Calculate total items in cart for header update
-$totalItems = 0;
-foreach ($_SESSION['cart'] as $item) {
-    $totalItems += $item['quantity'];
-}
-$response['cart_count'] = $totalItems;
-
-// Return JSON response
+// --- Final Response ---
 header('Content-Type: application/json');
 echo json_encode($response);
 ?>
