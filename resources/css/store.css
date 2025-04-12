@@ -14,7 +14,6 @@
   /* Push items to opposite ends */
   align-items: center;
   /* Vertically align items in the middle */
-  /* margin-bottom: 2.5rem; */ /* Reduced margin below */
   padding-bottom: 1rem;
   /* Optional: add padding below */
   border-bottom: 1px solid #eee;
@@ -34,7 +33,6 @@
   /* Make the title significantly larger */
   color: var(--text-dark);
   /* Use the standard dark text color */
-  /* margin: 0; */ /* Removed default margin */
   font-weight: 600;
   /* Adjust weight as needed */
   flex-grow: 1;
@@ -63,6 +61,8 @@
   cursor: pointer;
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
+  height: 38px; /* Match search input roughly */
+  box-sizing: border-box;
 }
 .search-form .search-button:hover {
   background-color: #555;
@@ -73,7 +73,6 @@
   /* Be specific */
   width: auto; /* Adjust width automatically */
   min-width: 150px; /* Minimum width */
-  /* max-width: 350px; */ /* Max width handled by form */
   padding: 0.8rem 1rem; /* Comfortable padding */
   border: 1px solid #ccc; /* Subtle border */
   border-radius: 4px; /* Slightly rounded corners */
@@ -81,9 +80,10 @@
   font-size: 0.9rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
   margin: 0; /* Remove default margin */
-  /* flex-basis: 300px; */ /* Base width before growing/shrinking */
   flex-grow: 1; /* Allow search bar to grow */
   margin-right: 0; /* Remove margin if buttons are adjacent */
+  height: 38px; /* Match button roughly */
+  box-sizing: border-box;
 }
 
 /* Optional: Add a focus style to the search bar */
@@ -92,101 +92,155 @@
   /* Remove default browser outline */
   border-color: var(--text-dark);
   /* Darken border on focus */
-  box-shadow: 0 0 0 2px rgba(44, 39, 36, 0.1);
-  /* Subtle glow */
+  box-shadow: 0 0 0 1px var(--text-dark); /* Subtle focus ring */
 }
 
-/* --- Filter Bar Styling --- */
+/* --- Filter Bar Styling REFINED for Minimalism --- */
 .filter-sort-bar {
-  background-color: #f8f8f8; /* Light background */
-  padding: 1rem 2%; /* Padding */
+  background-color: transparent; /* Make background transparent */
+  padding: 1rem 0; /* Vertical padding, no horizontal */
   margin-bottom: 2rem; /* Space below */
-  border-radius: 4px;
-  border: 1px solid #eee;
+  border: none; /* REMOVED top/bottom borders */
+  /* border-top: 1px solid #eee; */ /* REMOVED */
+  /* border-bottom: 1px solid #eee; */ /* REMOVED */
 }
 
 .filter-sort-bar form {
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
-  align-items: center;
-  gap: 1rem 1.5rem; /* Row gap and column gap */
+  flex-wrap: wrap;
+  align-items: center; /* Key for vertical alignment */
+  gap: 0.8rem 1.5rem; /* Adjust row and column gaps */
 }
 
 .filter-group {
   display: flex;
-  align-items: center;
-  gap: 0.5rem; /* Space between label and select/input */
+  align-items: center; /* Vertically align items in the group */
+  gap: 0.6rem; /* Space between label and input/select */
 }
 
 .filter-group label {
-  font-weight: 500;
+  font-weight: 400; /* Lighter font weight? Adjust as needed */
   font-size: 0.9rem;
-  color: #555;
-  white-space: nowrap; /* Prevent labels wrapping */
+  color: var(--text-dark); /* Use main text color */
+  white-space: nowrap;
+  margin-bottom: 0; /* Remove any bottom margin */
 }
 
 .filter-group select,
-.filter-group input[type="number"],
-.filter-group input[type="checkbox"] {
-  padding: 0.5rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.filter-group input[type="number"] {
+  padding: 0.4rem 0.6rem; /* Adjust padding */
+  border: 1px solid #ddd; /* Lighter border */
+  border-radius: 3px; /* Slightly less rounded */
   font-size: 0.9rem;
-  background-color: white;
+  background-color: var(--white); /* Keep white background for inputs */
+  height: 32px; /* Explicit height for alignment */
+  box-sizing: border-box; /* Include padding/border in height */
+  line-height: normal; /* Reset line-height */
+  font-family: "Roboto", sans-serif; /* Ensure consistent font */
 }
 .filter-group select {
   cursor: pointer;
-  min-width: 140px; /* Min width for dropdowns */
+  min-width: 130px;
+  appearance: none; /* Remove default arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23888888' d='M5 6L0 1l1-1 4 4 4-4 1 1z'/%3E%3C/svg%3E"); /* Custom arrow */
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  padding-right: 1.8rem; /* Space for custom arrow */
 }
 .filter-group select:focus,
 .filter-group input[type="number"]:focus {
   outline: none;
   border-color: var(--text-dark);
-  box-shadow: 0 0 0 2px rgba(44, 39, 36, 0.1);
+  box-shadow: 0 0 0 1px var(--text-dark); /* Subtle focus ring */
 }
 
 /* Price Filter Specifics */
 .filter-group.price-filter {
-  gap: 0.3rem; /* Reduce gap within price group */
+  gap: 0.3rem;
 }
 .price-input {
-  width: 80px; /* Fixed width for price inputs */
+  width: 75px; /* Slightly adjust width */
 }
 .price-filter span {
-  color: #777;
+  color: #999; /* Lighter color for dash */
+  align-self: center; /* Ensure dash aligns with inputs */
+  padding: 0 0.2rem;
 }
 
 /* Stock Filter Specifics */
 .filter-group.stock-filter input[type="checkbox"] {
-  padding: 0; /* Remove padding for checkbox */
-  margin-right: 0.2rem;
-  width: auto; /* Reset width */
-  accent-color: var(--text-dark); /* Style check color */
+  padding: 0;
+  margin: 0; /* Reset margin */
+  margin-right: 0.4rem; /* Space after checkbox */
+  width: auto;
+  height: auto; /* Let browser control size */
+  accent-color: var(--text-dark);
   cursor: pointer;
+  vertical-align: middle; /* Align checkbox better */
 }
 .filter-group.stock-filter label {
   /* Label for checkbox */
   font-weight: normal;
   cursor: pointer;
+  padding-top: 1px; /* Fine-tune vertical alignment */
 }
 
-/* Apply Filters Button */
+/* NEW: Button Group Wrapper */
+.filter-button-group {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem; /* Space between buttons */
+  margin-left: auto; /* Pushes this group to the right */
+  order: 10; /* Try to keep it at the end when wrapping */
+}
+
+/* Apply Filters Button (minor adjustments) */
 .apply-filters-btn {
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1.2rem;
+  height: 32px;
+  line-height: 1;
   background-color: var(--text-dark);
   color: var(--primary-color);
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
-  margin-left: auto; /* Push button to the right if space allows */
   white-space: nowrap;
   transition: background-color 0.3s ease;
+  box-sizing: border-box;
+  /* margin-left: 1rem; */ /* REMOVED - Handled by wrapper */
+  /* order: 10; */ /* REMOVED - Handled by wrapper */
 }
 .apply-filters-btn:hover {
   background-color: #555;
 }
+
+/* Reset Filters Button */
+.reset-filters-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  height: 32px;
+  line-height: 1;
+  font-size: 0.85rem;
+  color: #555;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+  /* order: 11; */ /* REMOVED - Handled by wrapper */
+}
+
+.reset-filters-btn:hover {
+  color: var(--text-dark);
+  border-color: #aaa;
+  background-color: #f8f8f8;
+}
+
 /* --- End Filter Bar Styling --- */
 
 .product-grid {
@@ -194,7 +248,6 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 2rem;
   margin-bottom: 2rem;
-  /* Add space before pagination */
 }
 
 .product-card {
@@ -206,9 +259,7 @@
   position: relative; /* Needed for overlay */
   overflow: hidden;
   display: flex;
-  /* Use flexbox for vertical alignment */
   flex-direction: column;
-  /* Stack items vertically */
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -233,7 +284,6 @@
   margin-bottom: 0.5rem;
   line-height: 1.4;
   flex-grow: 1;
-  /* Allow name to take up space */
 }
 
 .product-card p.price {
@@ -246,9 +296,7 @@
 /* Container for button OR quantity selector */
 .cart-interaction {
   margin-top: auto;
-  /* Pushes button/selector to the bottom */
   text-align: center;
-  /* Center button/selector */
 }
 
 #cart-status {
@@ -256,7 +304,6 @@
   color: green;
   text-align: center;
   min-height: 1.2em;
-  /* Prevent layout shift when message appears/disappears */
 }
 
 /* --- Product Card Stock Overlay --- */
@@ -266,7 +313,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+  background-color: rgba(255, 255, 255, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -274,9 +321,9 @@
   font-weight: bold;
   font-size: 1.1rem;
   text-transform: uppercase;
-  z-index: 2; /* Ensure it's above the image */
-  border-radius: 4px; /* Match card radius */
-  pointer-events: none; /* Allow clicks through to card if needed, though buttons below are disabled */
+  z-index: 2;
+  border-radius: 4px;
+  pointer-events: none;
 }
 
 /* --- Pagination Styles --- */
@@ -327,7 +374,7 @@
 }
 
 .pagination a.prev-next-link:hover {
-  color: var(--primary-color); /* Using primary color on hover */
+  color: var(--primary-color);
   background-color: transparent;
   border-color: transparent;
 }
@@ -360,28 +407,28 @@
 
 /* --- CSS for Quantity Selector (FIXED) --- */
 .quantity-selector {
-  display: inline-flex; /* Use flex */
-  align-items: center; /* Align items vertically center */
+  display: inline-flex;
+  align-items: center;
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-top: 0.5rem;
-  height: 36px; /* Define fixed height - Match button height */
-  overflow: hidden; /* Hide overflow */
+  height: 36px;
+  overflow: hidden;
 }
 
 .quantity-selector button {
   background-color: #f8f8f8;
   border: none;
   cursor: pointer;
-  font-size: 1.2rem; /* Size for + / - symbols */
-  line-height: 1; /* Reset line height for button symbols */
-  padding: 0 12px; /* Horizontal padding for buttons */
-  height: 100%; /* Make buttons fill the container height */
-  display: flex; /* Use flex to center symbols in buttons */
-  align-items: center; /* Vertically center */
-  justify-content: center; /* Horizontally center */
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #555;
-  box-sizing: border-box; /* Include padding/border in height */
+  box-sizing: border-box;
 }
 
 .quantity-selector button:hover {
@@ -390,33 +437,33 @@
 
 /* Quantity display - CENTERED */
 .quantity-selector .qty-display {
-  padding: 0 10px; /* Adjust horizontal padding */
-  font-size: 0.9rem; /* Font size for the number */
+  padding: 0 10px;
+  font-size: 0.9rem;
   text-align: center;
   font-weight: bold;
   background-color: var(--text-dark);
   color: var(--primary-color);
-  min-width: 25px; /* Ensure some width */
-  height: 100%; /* Fill the container height */
-  display: flex; /* Use flex to center */
-  align-items: center; /* Vertically center */
-  justify-content: center; /* Horizontally center */
-  box-sizing: border-box; /* Include padding/border in height */
-  line-height: normal; /* Reset line-height, flex handles centering */
+  min-width: 25px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  line-height: normal;
 }
 
 .quantity-selector .minus-btn {
-  border-right: 1px solid #ccc; /* Separator line */
+  border-right: 1px solid #ccc;
 }
 
 .quantity-selector .plus-btn {
-  border-left: 1px solid #ccc; /* Separator line */
+  border-left: 1px solid #ccc;
 }
 
 /* --- Styles for Add to Cart Button (Ensure it matches height) --- */
 .add-to-cart-btn {
   display: inline-block;
-  padding: 0 1.2rem; /* Vertical padding is handled by height/line-height */
+  padding: 0 1.2rem;
   background-color: var(--text-dark);
   color: var(--primary-color);
   border: none;
@@ -426,10 +473,10 @@
   transition: background-color 0.3s ease;
   width: auto;
   margin-top: 0.5rem;
-  height: 36px; /* Match quantity selector height */
-  line-height: 36px; /* Vertically center text */
+  height: 36px;
+  line-height: 36px;
   box-sizing: border-box;
-  vertical-align: top; /* Align with the top of the quantity selector if needed */
+  vertical-align: top;
 }
 
 .add-to-cart-btn:hover {
@@ -450,14 +497,27 @@
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 992px) {
-  /* Adjust breakpoint as needed */
   .filter-sort-bar form {
-    gap: 1rem; /* Reduce gap */
+    gap: 1rem;
+    /* justify-content: space-between; */ /* May cause issues with button alignment */
   }
-  .apply-filters-btn {
-    margin-left: 0; /* Don't push right on smaller screens */
-    width: 100%; /* Make button full width */
-    margin-top: 0.5rem;
+  .filter-group {
+    flex-grow: 1;
+    min-width: 150px;
+  }
+  /* Ensure button group stays right */
+  .filter-button-group {
+    margin-left: auto; /* Re-apply auto margin */
+    width: auto; /* Don't take full width */
+    order: 10; /* Keep at end */
+    flex-grow: 0; /* Don't allow button group to grow */
+    min-width: fit-content; /* Prevent excessive shrinking */
+  }
+  .apply-filters-btn,
+  .reset-filters-btn {
+    width: auto; /* Don't take full width */
+    margin-top: 0; /* Remove top margin */
+    order: 0; /* Reset order */
   }
 }
 
@@ -473,17 +533,31 @@
   }
   .filter-sort-bar form {
     flex-direction: column;
-    align-items: stretch; /* Stretch items full width */
+    align-items: stretch;
+    gap: 1rem;
   }
   .filter-group select,
   .filter-group input[type="number"] {
-    width: 100%; /* Make inputs/selects full width */
+    width: 100%;
   }
   .price-input {
-    width: calc(50% - 1rem); /* Adjust price input width */
+    width: calc(50% - 1rem);
   }
-  .apply-filters-btn {
+  /* Stack buttons full width on smallest screens */
+  .filter-button-group {
     width: 100%;
+    margin-left: 0; /* No auto margin when stacked */
     margin-top: 1rem;
+    order: 0; /* Reset order */
+    flex-direction: column; /* Stack buttons */
+    gap: 0.5rem; /* Gap between stacked buttons */
+    align-items: stretch; /* Make buttons full width */
+  }
+  .apply-filters-btn,
+  .reset-filters-btn {
+    width: 100%;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
   }
 }

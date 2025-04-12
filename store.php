@@ -272,7 +272,10 @@ if (isset($_SESSION['cart'])) {
                     </select>
                 </div>
 
-                <button type="submit" class="apply-filters-btn">Apply Filters</button>
+                <div class="filter-button-group">
+                    <a href="store.php" class="reset-filters-btn">Reset</a>
+                    <button type="submit" class="apply-filters-btn">Apply Filters</button>
+                </div>
             </form>
         </div>
 
