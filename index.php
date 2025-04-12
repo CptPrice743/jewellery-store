@@ -3,6 +3,7 @@ session_start(); // ADD THIS LINE
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
   <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
@@ -13,12 +14,12 @@ session_start(); // ADD THIS LINE
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
   <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
-    rel="stylesheet"
-  />
+    rel="stylesheet" />
   <link rel="stylesheet" href="./resources/css/style.css">
 
   <meta charset="UTF-8">
 </head>
+
 <body>
   <header>
     <div class="content">
@@ -29,20 +30,27 @@ session_start(); // ADD THIS LINE
           <li><a href="./about-us.php">About us</a></li>
           <li><a href="https://www.instagram.com/">Follow us</a></li>
           <?php if (isset($_SESSION['user_id'])): ?>
-              <li><a href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?>)</a></li>
+            <li><a href="./store.php">Store</a></li>
+            <li><a href="cart_page.php">Cart (<span id="cart-count-header"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></span>)</a></li>
+            <li><a href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?>)</a></li>
           <?php else: ?>
-              <li><a href="login.php">Login</a></li>
+            <li><a href="./store.php" class="button buy-now-button">Buy now</a></li>
           <?php endif; ?>
         </ul>
       </nav>
       <nav class="mobile">
-         <ul>
-          <li><a href="./index.php">Prism Jewellery</a></li> <li><a href="./about-us.php">About Us</a></li>  <li><a href="https://www.instagram.com/">Follow Us</a></li> <?php if (isset($_SESSION['user_id'])): ?>
-                <li><a href="logout.php" class="button">Logout</a></li>
-           <?php else: ?>
-                <li><a href="./login.php" class="button">Login</a></li>
-           <?php endif; ?>
-         </ul>
+        <ul>
+          <li><a href="./index.php">Prism Jewellery</a></li>
+          <li><a href="./about-us.php">About Us</a></li>
+          <li><a href="https://www.instagram.com/">Follow Us</a></li>
+          <?php if (isset($_SESSION['user_id'])): ?>
+            <li><a href="./store.php">Store</a></li>
+            <li><a href="cart_page.php">Cart (<span id="cart-count-mobile-header"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></span>)</a></li>
+            <li><a href="logout.php" class="button">Logout</a></li>
+          <?php else: ?>
+            <li><a href="./store.php" class="button buy-now-button">Buy now</a></li>
+          <?php endif; ?>
+        </ul>
       </nav>
     </div>
   </header>
@@ -60,7 +68,7 @@ session_start(); // ADD THIS LINE
             <span>
               Email us to request a demo and be in our waiting list for the <strong>Doorstep Tryout</strong> facility!
             </span>
-            <div class="button">Email us now!</div>
+            <div class="button email-button">Email us now!</div>
           </div>
         </div>
       </div>
@@ -70,7 +78,7 @@ session_start(); // ADD THIS LINE
       <div class="feature">
         <div class="center">
           <div class="image-container">
-            <img src="./resources/images/feature-1.jpg"/>
+            <img src="./resources/images/feature-1.jpg" />
           </div>
           <div class="content">
             <h2>Less is More</h2>
@@ -81,7 +89,7 @@ session_start(); // ADD THIS LINE
       <div class="feature">
         <div class="center">
           <div class="image-container">
-            <img src="./resources/images/feature-2.jpg"/>
+            <img src="./resources/images/feature-2.jpg" />
           </div>
           <div class="content">
             <h2>Simplicity, Refined</h2>
@@ -115,13 +123,13 @@ session_start(); // ADD THIS LINE
     <div id="quotes-section">
       <div class="content center">
         <span class="quote">“ Each piece is a masterpiece of craftsmanship and design, showcasing an unparalleled attention to detail.”</span>
-        <img class="quote-citation" src="./resources/images/Natural_Diamonds_logo_cropped.png"/>
+        <img class="quote-citation" src="./resources/images/Natural_Diamonds_logo_cropped.png" />
       </div>
     </div>
 
     <footer>
       <div class="content">
-        <span class="copyright">© 2024  Prism Jewellery, All Rights Reserved</span>
+        <span class="copyright">© 2024 Prism Jewellery, All Rights Reserved</span>
         <span class="location">Designed by Vyom Uchat (22BCP450)</span>
       </div>
     </footer>
@@ -132,4 +140,5 @@ session_start(); // ADD THIS LINE
   <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons/ionicons.js"></script>
   <script src="./resources/js/index.js"></script>
 </body>
+
 </html>

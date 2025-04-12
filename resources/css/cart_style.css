@@ -1,0 +1,461 @@
+/* General Cart Page Container */
+.cart-page-container {
+  padding: 2rem 5%;
+  padding-top: 7rem; /* Account for fixed header */
+  min-height: 70vh; /* Ensure content pushes footer down */
+  font-family: "Roboto", sans-serif; /* More readable font for details */
+  color: var(--text-dark);
+}
+
+.go-back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #555;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.go-back-link:hover {
+  text-decoration: underline;
+}
+
+/* Cart Grid Layout */
+.cart-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 66% for items, 33% for summary */
+  gap: 2.5rem; /* Space between columns */
+}
+
+/* Left Column: Order Summary */
+.order-summary-column h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem; /* Slightly smaller than image example */
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+.order-summary-column .item-count-text {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
+}
+
+/* Cart Items List - Adjust top padding */
+.cart-items-list {
+  border-top: 1px solid #eee;
+  padding-top: 1rem; /* Consistent with item-count margin */
+}
+
+/* Individual Cart Item Box */
+.cart-item-box {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: #fff;
+  gap: 1.5rem; /* Space between elements inside the box */
+}
+
+.cart-item-box .item-image {
+  width: 100px; /* Fixed width for image */
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  background-color: #f0f0f0; /* Placeholder bg */
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+.cart-item-box .item-details {
+  flex-grow: 1; /* Take remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Space within details */
+}
+
+.cart-item-box .item-details h2 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cart-item-box .item-details .price {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Actions (Quantity + Remove) */
+.item-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Reduce gap between counter and delete button */
+}
+
+/* Combined control bar */
+.item-control-bar {
+  display: flex;
+  align-items: center;
+  margin-top: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  height: 36px;
+  overflow: hidden;
+  width: fit-content; /* Make the container only as wide as its content */
+  align-self: flex-start; /* Prevent stretching within the parent flex container */
+}
+
+/* Minus button */
+.minus-btn {
+  background-color: #f8f8f8;
+  border: none;
+  border-right: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0 12px;
+  height: 100%;
+  color: #555;
+}
+
+/* Plus button */
+.plus-btn {
+  background-color: #f8f8f8;
+  border: none;
+  border-left: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0 12px;
+  height: 100%;
+  color: #555;
+}
+
+/* Quantity display */
+.qty-display {
+  padding: 0 15px;
+  font-size: 0.9rem;
+  text-align: center;
+  font-weight: bold;
+  background-color: #222;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+/* Re-use quantity selector styles if defined globally, or define here */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  height: 36px;
+  overflow: hidden;
+}
+.quantity-selector button {
+  background-color: #f8f8f8;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.4rem 0.8rem;
+  font-weight: bold;
+  color: #555;
+  height: 100%;
+}
+.quantity-selector button:hover {
+  background-color: #eee;
+}
+.quantity-selector .qty-display {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  min-width: 20px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #222;
+  color: #fff;
+}
+.quantity-selector .minus-btn {
+  border-radius: 4px 0 0 4px;
+}
+.quantity-selector .plus-btn {
+  border-radius: 0 4px 4px 0;
+}
+
+.remove-item-btn {
+  background-color: #f8f8f8;
+  border: none;
+  border-left: 1px solid #ccc;
+  cursor: pointer;
+  height: 100%;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e74c3c;
+  
+}
+.remove-item-btn:hover {
+  color: #c0392b;
+}
+
+.remove-item-btn i {
+  font-size: 1.2rem;
+}
+
+.item-subtotal {
+  text-align: right;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-left: auto; /* Push to the right */
+  flex-shrink: 0; /* Prevent shrinking */
+  min-width: 80px; /* Ensure space for price */
+}
+.item-subtotal p {
+  margin: 0;
+}
+
+/* Right Column: Payment Summary */
+.payment-summary-column {
+  position: sticky; /* Make summary stick on scroll */
+  top: 8rem; /* Adjust based on header height + desired gap */
+  height: fit-content; /* Only take height needed */
+}
+
+.coupon-section {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+.coupon-section form {
+  display: flex;
+  gap: 0.5rem;
+}
+.coupon-section input[type="text"] {
+  flex-grow: 1;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.coupon-section button[type="submit"] {
+  padding: 0.7rem 1.2rem;
+  background-color: #555;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  white-space: nowrap; /* Prevent wrapping */
+}
+.coupon-section button[type="submit"]:hover {
+  background-color: var(--text-dark);
+}
+.coupon-section .remove-coupon-btn {
+  background-color: #e74c3c;
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+}
+.coupon-section .remove-coupon-btn:hover {
+  background-color: #c0392b;
+}
+
+.payment-summary-box {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background-color: #fff;
+}
+.payment-summary-box h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.8rem;
+  font-weight: 600;
+}
+.payment-summary-box p {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+  color: #555;
+}
+.payment-summary-box p span:last-child {
+  font-weight: 500;
+  color: var(--text-dark);
+}
+.payment-summary-box hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 1.5rem 0;
+}
+.payment-summary-box .total-amount {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-dark);
+}
+.payment-summary-box .total-amount span {
+  font-weight: bold;
+  color: var(--text-dark);
+}
+
+.payment-summary-box .coupon-applied-line span {
+  color: #28a745; /* Green for coupon */
+  font-weight: 500;
+}
+.payment-summary-box .coupon-applied-line span:last-child {
+  color: #28a745;
+}
+
+.payment-summary-box .proceed-button {
+  display: block;
+  width: 100%;
+  padding: 0.9rem;
+  margin-top: 1.5rem;
+  background-color: var(--text-dark);
+  color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.payment-summary-box .proceed-button:hover {
+  background-color: #555;
+}
+.payment-summary-box .proceed-button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.payment-summary-box .login-prompt {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+.payment-summary-box .login-prompt a {
+  color: var(--text-dark);
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* Empty Cart Styles */
+.empty-cart-box {
+  border: 1px dashed #ccc;
+  background-color: #fdfdfd;
+  padding: 3rem;
+  text-align: center;
+  margin-top: 2rem;
+  border-radius: 8px;
+}
+.empty-cart-box p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1em;
+  color: #555;
+}
+.empty-cart-box .button.continue-shopping-btn {
+  padding: 0.8rem 2rem;
+  font-weight: bold;
+  background-color: var(--text-dark);
+  color: var(--primary-color);
+  text-decoration: none;
+  display: inline-block;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+.empty-cart-box .button.continue-shopping-btn:hover {
+  background-color: #555;
+}
+
+/* Cart Update Status */
+#cart-update-status {
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+#cart-update-status.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+#cart-update-status.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .cart-grid {
+    grid-template-columns: 1fr; /* Stack columns */
+  }
+  .payment-summary-column {
+    position: static; /* Unstick summary */
+    margin-top: 2rem;
+  }
+  .cart-item-box {
+    flex-direction: column; /* Stack image/details vertically */
+    align-items: center; /* Center items */
+    text-align: center;
+  }
+  .item-details {
+    align-items: center;
+  }
+  .item-actions {
+    justify-content: center; /* Center actions when stacking vertically */
+    gap: 1rem; /* Increase gap slightly when stacked */
+  }
+  .item-subtotal {
+    margin-left: 0;
+    margin-top: 1rem;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-page-container {
+    padding: 1rem 3%;
+    padding-top: 6rem;
+  }
+  .order-summary-column h1 {
+    font-size: 1.5rem;
+  }
+  .payment-summary-box h2 {
+    font-size: 1.3rem;
+  }
+  .cart-item-box {
+    padding: 1rem;
+  }
+  .coupon-section {
+    padding: 1rem;
+  }
+  .coupon-section form {
+    flex-direction: column;
+  }
+  .payment-summary-box {
+    padding: 1rem;
+  }
+  .total-amount {
+    font-size: 1.1rem;
+  }
+  .proceed-button {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+}

@@ -89,6 +89,24 @@ header .mobile {
   display: none;
 }
 
+.buy-now-button {
+  /* Inherits styles from .button like background, color, border-radius */
+  padding: 0.5rem 1.5rem; /* Adjust padding as needed */
+  line-height: 1.6; /* Ensure consistent vertical alignment */
+  text-decoration: none; /* Ensure it looks like a button, not a link */
+  display: inline-block; /* Allows padding and margins */
+  text-align: center;
+  vertical-align: middle; /* Align with other nav items */
+}
+
+/* Ensure hover effect is consistent */
+.buy-now-button:hover {
+  background-color: var(--primary-color); /* Example hover from login button */
+  color: var(--text-dark);
+  border-color: var(--text-dark); /* If you add a border */
+  transition: 0.5s;
+}
+
 /* Sign Up Section */
 
 #sign-up-section {
@@ -361,6 +379,7 @@ footer .copyright {
     display: none;
   }
 
+
   #sign-up-cta h1 {
     font-size: 3.125rem;
   }
@@ -579,7 +598,8 @@ body {
 .login-container,
 .about-section,
 .confirmation-container,
-.main-content /* Target homepage main content too */ {
+.main-content, /* Target homepage main content too */ 
+.cart-page-container {
   flex-grow: 1;
 }
 
@@ -627,6 +647,7 @@ body {
 
 .quantity-selector button:hover {
   background-color: #eee;
+  
 }
 
 .quantity-selector .qty-display {
@@ -671,7 +692,6 @@ body {
 .add-to-cart-btn:hover {
   background-color: #555; /* Darken hover color */
 }
-
 
 /* Optional: Indicate processing */
 .cart-interaction.processing * {
