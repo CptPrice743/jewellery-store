@@ -50,22 +50,17 @@ if ($stmt) { // Check if prepare was successful
 }
 
 
-// --- Get Cart Count for Header ---
+// --- Get Cart Count for Header (Uses SESSION cart primarily now) ---
 $cartCount = 0;
-if (isset($_SESSION['user_id'])) {
-    // Logged in: Get count from database
-    $count_stmt = $conn->prepare("SELECT SUM(quantity) as total FROM user_carts WHERE user_id = ?");
-    if ($count_stmt) {
-        $count_stmt->bind_param("i", $_SESSION['user_id']);
-        $count_stmt->execute();
-        $count_result = $count_stmt->get_result()->fetch_assoc();
-        $cartCount = $count_result['total'] ?? 0;
-        $count_stmt->close();
+if (isset($_SESSION['cart'])) { // Check session cart first
+    foreach ($_SESSION['cart'] as $item) {
+        if (isset($item['quantity'])) {
+            $cartCount += $item['quantity'];
+        }
     }
-} else {
-    // Not logged in: Get count from session
-    $cartCount = array_sum(array_column($_SESSION['cart'] ?? [], 'quantity'));
 }
+// Note: DB count logic removed here as session should be the source of truth after login.
+// Ensure login.php correctly populates $_SESSION['cart'].
 // --- End Cart Count ---
 
 
@@ -311,6 +306,7 @@ if (isset($_SESSION['user_id'])) {
             border: 1px solid #ccc;
             border-radius: 4px;
             margin-top: 0.5rem;
+            /* Align with add-to-cart button margin */
         }
 
         .quantity-selector button {
@@ -320,6 +316,7 @@ if (isset($_SESSION['user_id'])) {
             font-size: 1.2rem;
             line-height: 1;
             padding: 0.5rem 0.9rem;
+            /* Match button padding for consistency */
             font-weight: bold;
             color: #555;
         }
@@ -328,14 +325,31 @@ if (isset($_SESSION['user_id'])) {
             background-color: #eee;
         }
 
+        /* Ensure consistent height with button */
+        .quantity-selector button.minus-btn,
+        .quantity-selector button.plus-btn {
+            height: 36px;
+            /* Example height - adjust to match your button */
+            box-sizing: border-box;
+        }
+
+
         .quantity-selector .qty-display {
             padding: 0.5rem 1rem;
+            /* Match button padding */
             font-size: 1rem;
             min-width: 25px;
             text-align: center;
             font-weight: bold;
             background-color: var(--text-dark);
             color: var(--primary-color);
+            height: 36px;
+            /* Example height - match buttons */
+            line-height: 36px;
+            /* Vertically center text */
+            box-sizing: border-box;
+            display: inline-block;
+            /* Ensure height is applied */
         }
 
         .quantity-selector .minus-btn {
@@ -358,6 +372,11 @@ if (isset($_SESSION['user_id'])) {
             transition: background-color 0.3s ease;
             width: auto;
             margin-top: 0.5rem;
+            height: 36px;
+            /* Example height - match selector */
+            line-height: calc(36px - 1.2rem);
+            /* Adjust line-height for vertical centering */
+            box-sizing: border-box;
         }
 
         .add-to-cart-btn:hover {
@@ -415,20 +434,32 @@ if (isset($_SESSION['user_id'])) {
             // Use $products_result which was fetched earlier
             if ($products_result && $products_result->num_rows > 0) {
                 while ($row = $products_result->fetch_assoc()) {
+                    $productId = $row['product_id']; // Get product ID
+
                     echo "<div class='product-card'>";
                     echo "<img src='" . htmlspecialchars($row["image_url"] ?: './resources/images/placeholder.jpg') . "' alt='" . htmlspecialchars($row["name"]) . "' loading='lazy'>"; // Added placeholder fallback
                     echo "<h3>" . htmlspecialchars($row["name"]) . "</h3>";
                     echo "<p class='price'>$" . number_format($row["price"], 2) . "</p>"; // Format price
 
-                    // --- Cart Interaction Area ---
-                    echo "<div class='cart-interaction' data-product-id='" . $row["product_id"] . "'>";
-                    // Check if item is in cart (requires cart data to be available here)
-                    // This logic is complex here, better handled by cart.js fetching initial state
-                    // For now, always show "Add to Cart" and let cart.js handle updates
-                    echo "<button class='add-to-cart-btn'>Add to Cart</button>";
-                    // Or dynamically load quantity selector if needed (requires more setup)
-                    echo "</div>"; // End cart-interaction div
+                    // --- Cart Interaction Area (Conditional Rendering) ---
+                    echo "<div class='cart-interaction' data-product-id='" . $productId . "'>";
 
+                    // *** FIX: Check if item is in session cart ***
+                    if (isset($_SESSION['cart'][$productId]) && isset($_SESSION['cart'][$productId]['quantity'])) {
+                        $quantityInCart = $_SESSION['cart'][$productId]['quantity'];
+                        // Render the quantity selector HTML
+                        echo "<div class='quantity-selector'>";
+                        echo "<button class='minus-btn' data-product-id='" . $productId . "' aria-label='Decrease quantity'>-</button>";
+                        echo "<span class='qty-display'>" . $quantityInCart . "</span>";
+                        echo "<button class='plus-btn' data-product-id='" . $productId . "' aria-label='Increase quantity'>+</button>";
+                        echo "</div>";
+                    } else {
+                        // Render the "Add to Cart" button HTML
+                        echo "<button class='add-to-cart-btn'>Add to Cart</button>";
+                    }
+                    // *** END FIX ***
+
+                    echo "</div>"; // End cart-interaction div
                     echo "</div>"; // End product-card div
                 }
             } else {
@@ -451,10 +482,21 @@ if (isset($_SESSION['user_id'])) {
                 <?php endif; ?>
 
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <?php if ($i == $current_page): ?>
-                        <strong><?php echo $i; ?></strong>
-                    <?php else: ?>
-                        <a href="store.php?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    <?php // Simple pagination: Show only current, first, last, and nearby pages
+                    $showPage = false;
+                    if ($i == 1 || $i == $total_pages || ($i >= $current_page - 2 && $i <= $current_page + 2)) {
+                        $showPage = true;
+                    } elseif (($i == $current_page - 3 && $i > 1) || ($i == $current_page + 3 && $i < $total_pages)) {
+                        // Show ellipsis if there's a gap
+                        echo "<span style='border: none; background: none; padding: 0.6rem 0.2rem;'>...</span>";
+                    }
+                    ?>
+                    <?php if ($showPage): ?>
+                        <?php if ($i == $current_page): ?>
+                            <strong><?php echo $i; ?></strong>
+                        <?php else: ?>
+                            <a href="store.php?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        <?php endif; ?>
                     <?php endif; ?>
                 <?php endfor; ?>
 
@@ -474,18 +516,6 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </footer>
     <script src="resources/js/cart.js"></script>
-    <script>
-        // Optional: Script to update header cart count dynamically after AJAX updates
-        // You might need to modify cart.js to trigger a custom event or use a MutationObserver
-        // Example using custom event (modify cart.js to dispatch this event):
-        // document.addEventListener('cartUpdated', function(e) {
-        //    const newCount = e.detail.cart_count;
-        //    const cartCountSpan = document.getElementById('cart-count');
-        //    const cartCountSpanMobile = document.getElementById('cart-count-mobile');
-        //    if (cartCountSpan) cartCountSpan.textContent = newCount;
-        //    if (cartCountSpanMobile) cartCountSpanMobile.textContent = newCount;
-        // });
-    </script>
 </body>
 
 </html>
