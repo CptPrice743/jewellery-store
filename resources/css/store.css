@@ -14,8 +14,7 @@
   /* Push items to opposite ends */
   align-items: center;
   /* Vertically align items in the middle */
-  margin-bottom: 2.5rem;
-  /* Space below the header section */
+  /* margin-bottom: 2.5rem; */ /* Reduced margin below */
   padding-bottom: 1rem;
   /* Optional: add padding below */
   border-bottom: 1px solid #eee;
@@ -24,6 +23,7 @@
   /* Allow wrapping on smaller screens */
   gap: 1rem;
   /* Add gap between items when wrapping */
+  margin-bottom: 1rem; /* Reduce bottom margin */
 }
 
 /* Style for the "Our Collection" title */
@@ -34,40 +34,56 @@
   /* Make the title significantly larger */
   color: var(--text-dark);
   /* Use the standard dark text color */
-  margin: 0;
-  /* Remove default margin */
+  /* margin: 0; */ /* Removed default margin */
   font-weight: 600;
   /* Adjust weight as needed */
   flex-grow: 1;
   /* Allow title to take available space */
+  margin-bottom: 0; /* Remove bottom margin from h1 */
+}
+
+/* --- Store Header Search Form Alignment --- */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-grow: 1;
+  max-width: 400px;
+}
+.search-form .search-bar {
+  flex-grow: 1;
+}
+.search-form .search-button {
+  white-space: nowrap; /* Prevent button text wrapping */
+  padding: 0.8rem 1rem;
+  background-color: var(--text-dark);
+  color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+.search-form .search-button:hover {
+  background-color: #555;
 }
 
 /* Style for the search bar within the store header */
 .store-header .search-bar {
   /* Be specific */
-  width: auto;
-  /* Adjust width automatically */
-  min-width: 250px;
-  /* Minimum width */
-  max-width: 350px;
-  /* Max width */
-  padding: 0.8rem 1rem;
-  /* Comfortable padding */
-  border: 1px solid #ccc;
-  /* Subtle border */
-  border-radius: 4px;
-  /* Slightly rounded corners */
-  font-family: "Roboto", sans-serif;
-  /* Use a readable sans-serif font */
+  width: auto; /* Adjust width automatically */
+  min-width: 150px; /* Minimum width */
+  /* max-width: 350px; */ /* Max width handled by form */
+  padding: 0.8rem 1rem; /* Comfortable padding */
+  border: 1px solid #ccc; /* Subtle border */
+  border-radius: 4px; /* Slightly rounded corners */
+  font-family: "Roboto", sans-serif; /* Use a readable sans-serif font */
   font-size: 0.9rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  /* Smooth transition */
-  margin: 0;
-  /* Remove default margin */
-  flex-basis: 300px;
-  /* Base width before growing/shrinking */
-  flex-grow: 1;
-  /* Allow search bar to grow */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+  margin: 0; /* Remove default margin */
+  /* flex-basis: 300px; */ /* Base width before growing/shrinking */
+  flex-grow: 1; /* Allow search bar to grow */
+  margin-right: 0; /* Remove margin if buttons are adjacent */
 }
 
 /* Optional: Add a focus style to the search bar */
@@ -80,7 +96,98 @@
   /* Subtle glow */
 }
 
-/* --- End Store Header Styling --- */
+/* --- Filter Bar Styling --- */
+.filter-sort-bar {
+  background-color: #f8f8f8; /* Light background */
+  padding: 1rem 2%; /* Padding */
+  margin-bottom: 2rem; /* Space below */
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+
+.filter-sort-bar form {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  align-items: center;
+  gap: 1rem 1.5rem; /* Row gap and column gap */
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Space between label and select/input */
+}
+
+.filter-group label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #555;
+  white-space: nowrap; /* Prevent labels wrapping */
+}
+
+.filter-group select,
+.filter-group input[type="number"],
+.filter-group input[type="checkbox"] {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background-color: white;
+}
+.filter-group select {
+  cursor: pointer;
+  min-width: 140px; /* Min width for dropdowns */
+}
+.filter-group select:focus,
+.filter-group input[type="number"]:focus {
+  outline: none;
+  border-color: var(--text-dark);
+  box-shadow: 0 0 0 2px rgba(44, 39, 36, 0.1);
+}
+
+/* Price Filter Specifics */
+.filter-group.price-filter {
+  gap: 0.3rem; /* Reduce gap within price group */
+}
+.price-input {
+  width: 80px; /* Fixed width for price inputs */
+}
+.price-filter span {
+  color: #777;
+}
+
+/* Stock Filter Specifics */
+.filter-group.stock-filter input[type="checkbox"] {
+  padding: 0; /* Remove padding for checkbox */
+  margin-right: 0.2rem;
+  width: auto; /* Reset width */
+  accent-color: var(--text-dark); /* Style check color */
+  cursor: pointer;
+}
+.filter-group.stock-filter label {
+  /* Label for checkbox */
+  font-weight: normal;
+  cursor: pointer;
+}
+
+/* Apply Filters Button */
+.apply-filters-btn {
+  padding: 0.6rem 1.2rem;
+  background-color: var(--text-dark);
+  color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: auto; /* Push button to the right if space allows */
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+.apply-filters-btn:hover {
+  background-color: #555;
+}
+/* --- End Filter Bar Styling --- */
 
 .product-grid {
   display: grid;
@@ -96,7 +203,7 @@
   padding: 1rem;
   text-align: left;
   background-color: var(--white);
-  position: relative;
+  position: relative; /* Needed for overlay */
   overflow: hidden;
   display: flex;
   /* Use flexbox for vertical alignment */
@@ -152,6 +259,26 @@
   /* Prevent layout shift when message appears/disappears */
 }
 
+/* --- Product Card Stock Overlay --- */
+.stock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  z-index: 2; /* Ensure it's above the image */
+  border-radius: 4px; /* Match card radius */
+  pointer-events: none; /* Allow clicks through to card if needed, though buttons below are disabled */
+}
+
 /* --- Pagination Styles --- */
 .pagination {
   text-align: center;
@@ -200,7 +327,7 @@
 }
 
 .pagination a.prev-next-link:hover {
-  color: var(--primary-color);
+  color: var(--primary-color); /* Using primary color on hover */
   background-color: transparent;
   border-color: transparent;
 }
@@ -218,6 +345,17 @@
   margin: 0;
   border: none;
   background-color: transparent;
+}
+
+/* Pagination ellipsis */
+.pagination span.ellipsis {
+  display: inline-block;
+  padding: 0.6rem 0.5rem;
+  margin: 0 0.25rem;
+  border: none;
+  background: none;
+  color: #aaa;
+  vertical-align: middle;
 }
 
 /* --- CSS for Quantity Selector (FIXED) --- */
@@ -298,7 +436,54 @@
   background-color: #555;
 }
 
+/* Ensure cart buttons are truly disabled visually */
+.add-to-cart-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .cart-interaction.processing * {
   opacity: 0.5;
   pointer-events: none;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+  /* Adjust breakpoint as needed */
+  .filter-sort-bar form {
+    gap: 1rem; /* Reduce gap */
+  }
+  .apply-filters-btn {
+    margin-left: 0; /* Don't push right on smaller screens */
+    width: 100%; /* Make button full width */
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-form {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: none;
+  }
+  .search-form .search-button {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .filter-sort-bar form {
+    flex-direction: column;
+    align-items: stretch; /* Stretch items full width */
+  }
+  .filter-group select,
+  .filter-group input[type="number"] {
+    width: 100%; /* Make inputs/selects full width */
+  }
+  .price-input {
+    width: calc(50% - 1rem); /* Adjust price input width */
+  }
+  .apply-filters-btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
 }
