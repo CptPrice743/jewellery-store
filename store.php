@@ -1,5 +1,5 @@
 <?php
-session_start(); // ADD THIS LINE
+session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -74,320 +74,8 @@ if (isset($_SESSION['cart'])) { // Check session cart first
     <title>Prism Jewellery Store</title>
     <link rel="stylesheet" href="./resources/css/reset.css">
     <link rel="stylesheet" href="./resources/css/style.css">
+    <link rel="stylesheet" href="./resources/css/store.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-    <style>
-        /* Add specific styles for the store page */
-        .store-container {
-            padding: 2rem 5%;
-            /* Ensure padding-top accounts for fixed header */
-            padding-top: 7rem;
-            /* Adjust based on actual header height */
-        }
-
-        /* --- Store Header Styling --- */
-        .store-header {
-            display: flex;
-            /* Enable Flexbox */
-            justify-content: space-between;
-            /* Push items to opposite ends */
-            align-items: center;
-            /* Vertically align items in the middle */
-            margin-bottom: 2.5rem;
-            /* Space below the header section */
-            padding-bottom: 1rem;
-            /* Optional: add padding below */
-            border-bottom: 1px solid #eee;
-            /* Optional: subtle line below header */
-            flex-wrap: wrap;
-            /* Allow wrapping on smaller screens */
-            gap: 1rem;
-            /* Add gap between items when wrapping */
-        }
-
-        /* Style for the "Our Collection" title */
-        .store-header h1 {
-            font-family: "Playfair Display", serif;
-            /* Use the site's display font */
-            font-size: 2.5rem;
-            /* Make the title significantly larger */
-            color: var(--text-dark);
-            /* Use the standard dark text color */
-            margin: 0;
-            /* Remove default margin */
-            font-weight: 600;
-            /* Adjust weight as needed */
-            flex-grow: 1;
-            /* Allow title to take available space */
-        }
-
-        /* Style for the search bar within the store header */
-        .store-header .search-bar {
-            /* Be specific */
-            width: auto;
-            /* Adjust width automatically */
-            min-width: 250px;
-            /* Minimum width */
-            max-width: 350px;
-            /* Max width */
-            padding: 0.8rem 1rem;
-            /* Comfortable padding */
-            border: 1px solid #ccc;
-            /* Subtle border */
-            border-radius: 4px;
-            /* Slightly rounded corners */
-            font-family: "Roboto", sans-serif;
-            /* Use a readable sans-serif font */
-            font-size: 0.9rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            /* Smooth transition */
-            margin: 0;
-            /* Remove default margin */
-            flex-basis: 300px;
-            /* Base width before growing/shrinking */
-            flex-grow: 1;
-            /* Allow search bar to grow */
-        }
-
-        /* Optional: Add a focus style to the search bar */
-        .store-header .search-bar:focus {
-            outline: none;
-            /* Remove default browser outline */
-            border-color: var(--text-dark);
-            /* Darken border on focus */
-            box-shadow: 0 0 0 2px rgba(44, 39, 36, 0.1);
-            /* Subtle glow */
-        }
-
-        /* --- End Store Header Styling --- */
-
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-            /* Add space before pagination */
-        }
-
-        .product-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 1rem;
-            text-align: left;
-            background-color: var(--white);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            /* Use flexbox for vertical alignment */
-            flex-direction: column;
-            /* Stack items vertically */
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .product-card:hover {
-            background-color: var(--primary-color);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-card img {
-            display: block;
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            margin-bottom: 1rem;
-            background-color: #eee;
-        }
-
-        .product-card h3 {
-            font-size: 1.0rem;
-            font-weight: normal;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-            flex-grow: 1;
-            /* Allow name to take up space */
-        }
-
-        .product-card p.price {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--text-dark);
-            margin-bottom: 1rem;
-        }
-
-        /* Container for button OR quantity selector */
-        .cart-interaction {
-            margin-top: auto;
-            /* Pushes button/selector to the bottom */
-            text-align: center;
-            /* Center button/selector */
-        }
-
-
-        #cart-status {
-            margin-top: 1rem;
-            color: green;
-            text-align: center;
-            min-height: 1.2em;
-            /* Prevent layout shift when message appears/disappears */
-        }
-
-        /* --- Pagination Styles --- */
-        .pagination {
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
-        }
-
-        .pagination a,
-        .pagination strong,
-        .pagination span {
-            display: inline-block;
-            padding: 0.6rem 1rem;
-            margin: 0 0.25rem;
-            border: 1px solid #ddd;
-            text-decoration: none;
-            color: var(--text-dark);
-            background-color: var(--white);
-            border-radius: 4px;
-            font-family: "Roboto", sans-serif;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            vertical-align: middle;
-        }
-
-        .pagination a:hover {
-            background-color: var(--primary-color);
-            color: var(--text-dark);
-            border-color: #ccc;
-        }
-
-        .pagination strong {
-            background-color: var(--text-dark);
-            color: var(--primary-color);
-            border-color: var(--text-dark);
-            font-weight: bold;
-            cursor: default;
-        }
-
-        .pagination a.prev-next-link {
-            border: none;
-            background-color: transparent;
-            padding: 0.6rem 0.5rem;
-            color: var(--text-dark);
-            transition: color 0.3s ease;
-        }
-
-        .pagination a.prev-next-link:hover {
-            color: var(--primary-color);
-            background-color: transparent;
-            border-color: transparent;
-        }
-
-        .pagination span.prev-next-disabled {
-            border: none;
-            background-color: transparent;
-            padding: 0.6rem 0.5rem;
-            cursor: default;
-        }
-
-        .pagination span.prev-next-disabled span {
-            color: #aaa;
-            padding: 0;
-            margin: 0;
-            border: none;
-            background-color: transparent;
-        }
-
-        /* --- CSS for Quantity Selector (from style.css) --- */
-        .quantity-selector {
-            display: inline-flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-top: 0.5rem;
-            /* Align with add-to-cart button margin */
-        }
-
-        .quantity-selector button {
-            background-color: #f8f8f8;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            line-height: 1;
-            padding: 0.5rem 0.9rem;
-            /* Match button padding for consistency */
-            font-weight: bold;
-            color: #555;
-        }
-
-        .quantity-selector button:hover {
-            background-color: #eee;
-        }
-
-        /* Ensure consistent height with button */
-        .quantity-selector button.minus-btn,
-        .quantity-selector button.plus-btn {
-            height: 36px;
-            /* Example height - adjust to match your button */
-            box-sizing: border-box;
-        }
-
-
-        .quantity-selector .qty-display {
-            padding: 0.5rem 1rem;
-            /* Match button padding */
-            font-size: 1rem;
-            min-width: 25px;
-            text-align: center;
-            font-weight: bold;
-            background-color: var(--text-dark);
-            color: var(--primary-color);
-            height: 36px;
-            /* Example height - match buttons */
-            line-height: 36px;
-            /* Vertically center text */
-            box-sizing: border-box;
-            display: inline-block;
-            /* Ensure height is applied */
-        }
-
-        .quantity-selector .minus-btn {
-            border-radius: 4px 0 0 4px;
-        }
-
-        .quantity-selector .plus-btn {
-            border-radius: 0 4px 4px 0;
-        }
-
-        .add-to-cart-btn {
-            display: inline-block;
-            padding: 0.6rem 1.2rem;
-            background-color: var(--text-dark);
-            color: var(--primary-color);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s ease;
-            width: auto;
-            margin-top: 0.5rem;
-            height: 36px;
-            /* Example height - match selector */
-            line-height: calc(36px - 1.2rem);
-            /* Adjust line-height for vertical centering */
-            box-sizing: border-box;
-        }
-
-        .add-to-cart-btn:hover {
-            background-color: #555;
-        }
-
-        .cart-interaction.processing * {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-    </style>
 </head>
 
 <body>
@@ -401,7 +89,7 @@ if (isset($_SESSION['cart'])) { // Check session cart first
                     <li><a href="./store.php">Store</a></li>
                     <li><a href="cart_page.php">Cart (<span id="cart-count"><?php echo $cartCount; ?></span>)</a></li>
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <li><a href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?>)</a></li>
+                        <li><a href="logout.php">Logout</a></li>
                     <?php else: ?>
                         <li><a href="login.php">Login</a></li>
                     <?php endif; ?>
@@ -444,7 +132,7 @@ if (isset($_SESSION['cart'])) { // Check session cart first
                     // --- Cart Interaction Area (Conditional Rendering) ---
                     echo "<div class='cart-interaction' data-product-id='" . $productId . "'>";
 
-                    // *** FIX: Check if item is in session cart ***
+                    // Check if item is in session cart
                     if (isset($_SESSION['cart'][$productId]) && isset($_SESSION['cart'][$productId]['quantity'])) {
                         $quantityInCart = $_SESSION['cart'][$productId]['quantity'];
                         // Render the quantity selector HTML
@@ -457,7 +145,6 @@ if (isset($_SESSION['cart'])) { // Check session cart first
                         // Render the "Add to Cart" button HTML
                         echo "<button class='add-to-cart-btn'>Add to Cart</button>";
                     }
-                    // *** END FIX ***
 
                     echo "</div>"; // End cart-interaction div
                     echo "</div>"; // End product-card div

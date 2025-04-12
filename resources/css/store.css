@@ -1,0 +1,304 @@
+/* Add specific styles for the store page */
+.store-container {
+  padding: 2rem 5%;
+  /* Ensure padding-top accounts for fixed header */
+  padding-top: 7rem;
+  /* Adjust based on actual header height */
+}
+
+/* --- Store Header Styling --- */
+.store-header {
+  display: flex;
+  /* Enable Flexbox */
+  justify-content: space-between;
+  /* Push items to opposite ends */
+  align-items: center;
+  /* Vertically align items in the middle */
+  margin-bottom: 2.5rem;
+  /* Space below the header section */
+  padding-bottom: 1rem;
+  /* Optional: add padding below */
+  border-bottom: 1px solid #eee;
+  /* Optional: subtle line below header */
+  flex-wrap: wrap;
+  /* Allow wrapping on smaller screens */
+  gap: 1rem;
+  /* Add gap between items when wrapping */
+}
+
+/* Style for the "Our Collection" title */
+.store-header h1 {
+  font-family: "Playfair Display", serif;
+  /* Use the site's display font */
+  font-size: 2.5rem;
+  /* Make the title significantly larger */
+  color: var(--text-dark);
+  /* Use the standard dark text color */
+  margin: 0;
+  /* Remove default margin */
+  font-weight: 600;
+  /* Adjust weight as needed */
+  flex-grow: 1;
+  /* Allow title to take available space */
+}
+
+/* Style for the search bar within the store header */
+.store-header .search-bar {
+  /* Be specific */
+  width: auto;
+  /* Adjust width automatically */
+  min-width: 250px;
+  /* Minimum width */
+  max-width: 350px;
+  /* Max width */
+  padding: 0.8rem 1rem;
+  /* Comfortable padding */
+  border: 1px solid #ccc;
+  /* Subtle border */
+  border-radius: 4px;
+  /* Slightly rounded corners */
+  font-family: "Roboto", sans-serif;
+  /* Use a readable sans-serif font */
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  /* Smooth transition */
+  margin: 0;
+  /* Remove default margin */
+  flex-basis: 300px;
+  /* Base width before growing/shrinking */
+  flex-grow: 1;
+  /* Allow search bar to grow */
+}
+
+/* Optional: Add a focus style to the search bar */
+.store-header .search-bar:focus {
+  outline: none;
+  /* Remove default browser outline */
+  border-color: var(--text-dark);
+  /* Darken border on focus */
+  box-shadow: 0 0 0 2px rgba(44, 39, 36, 0.1);
+  /* Subtle glow */
+}
+
+/* --- End Store Header Styling --- */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+  /* Add space before pagination */
+}
+
+.product-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: left;
+  background-color: var(--white);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  /* Use flexbox for vertical alignment */
+  flex-direction: column;
+  /* Stack items vertically */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  background-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  display: block;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  background-color: #eee;
+}
+
+.product-card h3 {
+  font-size: 1rem;
+  font-weight: normal;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  flex-grow: 1;
+  /* Allow name to take up space */
+}
+
+.product-card p.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+/* Container for button OR quantity selector */
+.cart-interaction {
+  margin-top: auto;
+  /* Pushes button/selector to the bottom */
+  text-align: center;
+  /* Center button/selector */
+}
+
+#cart-status {
+  margin-top: 1rem;
+  color: green;
+  text-align: center;
+  min-height: 1.2em;
+  /* Prevent layout shift when message appears/disappears */
+}
+
+/* --- Pagination Styles --- */
+.pagination {
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 2rem;
+}
+
+.pagination a,
+.pagination strong,
+.pagination span {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  margin: 0 0.25rem;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  color: var(--text-dark);
+  background-color: var(--white);
+  border-radius: 4px;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+  vertical-align: middle;
+}
+
+.pagination a:hover {
+  background-color: var(--primary-color);
+  color: var(--text-dark);
+  border-color: #ccc;
+}
+
+.pagination strong {
+  background-color: var(--text-dark);
+  color: var(--primary-color);
+  border-color: var(--text-dark);
+  font-weight: bold;
+  cursor: default;
+}
+
+.pagination a.prev-next-link {
+  border: none;
+  background-color: transparent;
+  padding: 0.6rem 0.5rem;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
+}
+
+.pagination a.prev-next-link:hover {
+  color: var(--primary-color);
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.pagination span.prev-next-disabled {
+  border: none;
+  background-color: transparent;
+  padding: 0.6rem 0.5rem;
+  cursor: default;
+}
+
+.pagination span.prev-next-disabled span {
+  color: #aaa;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+}
+
+/* --- CSS for Quantity Selector (FIXED) --- */
+.quantity-selector {
+  display: inline-flex; /* Use flex */
+  align-items: center; /* Align items vertically center */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  height: 36px; /* Define fixed height - Match button height */
+  overflow: hidden; /* Hide overflow */
+}
+
+.quantity-selector button {
+  background-color: #f8f8f8;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem; /* Size for + / - symbols */
+  line-height: 1; /* Reset line height for button symbols */
+  padding: 0 12px; /* Horizontal padding for buttons */
+  height: 100%; /* Make buttons fill the container height */
+  display: flex; /* Use flex to center symbols in buttons */
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
+  color: #555;
+  box-sizing: border-box; /* Include padding/border in height */
+}
+
+.quantity-selector button:hover {
+  background-color: #eee;
+}
+
+/* Quantity display - CENTERED */
+.quantity-selector .qty-display {
+  padding: 0 10px; /* Adjust horizontal padding */
+  font-size: 0.9rem; /* Font size for the number */
+  text-align: center;
+  font-weight: bold;
+  background-color: var(--text-dark);
+  color: var(--primary-color);
+  min-width: 25px; /* Ensure some width */
+  height: 100%; /* Fill the container height */
+  display: flex; /* Use flex to center */
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
+  box-sizing: border-box; /* Include padding/border in height */
+  line-height: normal; /* Reset line-height, flex handles centering */
+}
+
+.quantity-selector .minus-btn {
+  border-right: 1px solid #ccc; /* Separator line */
+}
+
+.quantity-selector .plus-btn {
+  border-left: 1px solid #ccc; /* Separator line */
+}
+
+/* --- Styles for Add to Cart Button (Ensure it matches height) --- */
+.add-to-cart-btn {
+  display: inline-block;
+  padding: 0 1.2rem; /* Vertical padding is handled by height/line-height */
+  background-color: var(--text-dark);
+  color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  width: auto;
+  margin-top: 0.5rem;
+  height: 36px; /* Match quantity selector height */
+  line-height: 36px; /* Vertically center text */
+  box-sizing: border-box;
+  vertical-align: top; /* Align with the top of the quantity selector if needed */
+}
+
+.add-to-cart-btn:hover {
+  background-color: #555;
+}
+
+.cart-interaction.processing * {
+  opacity: 0.5;
+  pointer-events: none;
+}

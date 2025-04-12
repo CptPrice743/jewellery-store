@@ -1,5 +1,5 @@
 <?php
-session_start(); // ADD THIS LINE
+session_start();
 
 // If user is already logged in, redirect them away from login page
 if (isset($_SESSION['user_id'])) {
@@ -23,7 +23,8 @@ if ($conn->connect_error) {
 }
 
 // --- FUNCTION TO LOAD CART (Define or include from another file) ---
-function loadCartFromDatabase($conn, $userId) {
+function loadCartFromDatabase($conn, $userId)
+{
     $_SESSION['cart'] = []; // Clear any temporary session cart
     $stmt = $conn->prepare("SELECT product_id, quantity FROM user_carts WHERE user_id = ?");
     if ($stmt) { // Check if prepare was successful
@@ -35,7 +36,7 @@ function loadCartFromDatabase($conn, $userId) {
         }
         $stmt->close();
     } else {
-         error_log("Failed to prepare statement in loadCartFromDatabase: " . $conn->error);
+        error_log("Failed to prepare statement in loadCartFromDatabase: " . $conn->error);
     }
 }
 // --- END FUNCTION ---
@@ -72,11 +73,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // If there are no errors, check if the email and password exist in the database
     if (empty($emailErr) && empty($passwordErr)) {
-         // *** IMPORTANT: Fetch user_id and name along with checking credentials ***
+        // *** IMPORTANT: Fetch user_id and name along with checking credentials ***
         // *** Assuming 'users' table has 'user_id', 'name', 'email', 'password' columns ***
         // *** SECURITY WARNING: Store hashed passwords, not plain text! Use password_verify() ***
         $stmt = $conn->prepare("SELECT user_id, name, password FROM users WHERE email = ?");
-        if ($stmt){ // Check prepare success
+        if ($stmt) { // Check prepare success
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -85,13 +86,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $user = $result->fetch_assoc();
                 // *** SECURITY: Verify hashed password instead of plain text comparison ***
                 // if (password_verify($password, $user['password'])) { // Use this if passwords are hashed
-                 if ($password === $user['password']) { // TEMPORARY: If using plain text (NOT RECOMMENDED)
+                if ($password === $user['password']) { // TEMPORARY: If using plain text (NOT RECOMMENDED)
                     $loginSuccess = true;
                     $_SESSION['user_id'] = $user['user_id']; // Store user ID
                     $_SESSION['user_name'] = $user['name'];   // Store user name
 
                     // Load persistent cart
-                     loadCartFromDatabase($conn, $_SESSION['user_id']);
+                    loadCartFromDatabase($conn, $_SESSION['user_id']);
 
 
                     header("Location: store.php");
@@ -102,10 +103,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $loginErr = "Invalid email or password"; // Email not found
             }
-             $stmt->close();
+            $stmt->close();
         } else {
-             error_log("Failed to prepare statement in login: " . $conn->error);
-             $loginErr = "An error occurred during login.";
+            error_log("Failed to prepare statement in login: " . $conn->error);
+            $loginErr = "An error occurred during login.";
         }
     }
 }
@@ -120,6 +121,7 @@ $conn->close(); // Close connection at the end
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,62 +132,63 @@ $conn->close(); // Close connection at the end
     <link rel="stylesheet" href="./resources/css/style.css">
     <link rel="stylesheet" href="./resources/css/reset.css">
 </head>
+
 <body>
-     <header>
+    <header>
         <div class="content">
             <a href="index.php" class="desktop logo">Prism Jewellery</a>
             <nav class="desktop">
                 <ul>
                     <li><a href="./index.php">Home</a></li>
                     <li><a href="./about-us.php">About us</a></li>
-                    <li><a href="https://www.instagram.com/">Follow us</a></li>
-                    </ul>
+                </ul>
             </nav>
-             <nav class="mobile">
-                 <ul>
+            <nav class="mobile">
+                <ul>
                     <li><a href="./index.php">Prism Jewellery</a></li>
                     <li><a href="./about-us.php">About Us</a></li>
-                    <li><a href="https://www.instagram.com/">Follow Us</a></li>
-                 </ul>
-             </nav>
+                </ul>
+            </nav>
         </div>
     </header>
     <div class="login-container">
         <div class="centere">
             <h1>Login</h1>
 
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                    <?php if (!empty($loginErr)) : // Display login error if exists ?>
-                        <p style="color:red; text-align: center; margin-bottom: 15px;"><?php echo $loginErr; ?></p>
-                    <?php endif; ?>
-                    <div class="txt_field">
-                        <input name="Email" type="email" placeholder="Email" value="<?php echo htmlspecialchars($email); ?>" required>
-                         <span style="color:red" class="error">
-                            <?php echo $emailErr; ?>
-                        </span>
-                    </div>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                <?php if (!empty($loginErr)) : // Display login error if exists 
+                ?>
+                    <p style="color:red; text-align: center; margin-bottom: 15px;"><?php echo $loginErr; ?></p>
+                <?php endif; ?>
+                <div class="txt_field">
+                    <input name="Email" type="email" placeholder="Email" value="<?php echo htmlspecialchars($email); ?>" required>
+                    <span style="color:red" class="error">
+                        <?php echo $emailErr; ?>
+                    </span>
+                </div>
 
-                    <div class="txt_field">
-                        <input name="Password" type="password" placeholder="Password" required>
-                         <span style="color:red" class="error">
-                            <?php echo $passwordErr; ?>
-                        </span>
-                    </div>
+                <div class="txt_field">
+                    <input name="Password" type="password" placeholder="Password" required>
+                    <span style="color:red" class="error">
+                        <?php echo $passwordErr; ?>
+                    </span>
+                </div>
 
-                    <div style="margin-top: 10px" class="pass">Forgot Password?</div>
-                    <input type="submit" value="Sign In">
-                    <div class="singup_link">
-                        Not a member? <a href="signup.php">Signup</a>
-                    </div>
-                </form>
+                <div style="margin-top: 10px" class="pass">Forgot Password?</div>
+                <input type="submit" value="Sign In">
+                <div class="singup_link">
+                    Not a member? <a href="signup.php">Signup</a>
+                </div>
+            </form>
 
         </div>
     </div>
-     <footer>
-      <div class="content">
-        <span class="copyright">© 2024  Prism Jewellery, All Rights Reserved</span>
-        <span class="location">Designed by Vyom Uchat (22BCP450)</span>
-      </div>
+    <footer>
+        <div class="content">
+            <span class="copyright">© 2024 Prism Jewellery, All Rights Reserved</span>
+            <span class="location">Designed by Vyom Uchat (22BCP450)</span>
+        </div>
     </footer>
 </body>
+
 </html>

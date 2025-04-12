@@ -1,5 +1,5 @@
 <?php
-session_start(); // ADD THIS LINE
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,12 +29,11 @@ session_start(); // ADD THIS LINE
       <nav class="desktop">
         <ul>
           <li><a href="./index.php">Home</a></li>
-          <li><a href="./about-us.php">About us</a></li>  
-          <li><a href="https://www.instagram.com/">Follow us</a></li>
+          <li><a href="./about-us.php">About us</a></li>
           <?php if (isset($_SESSION['user_id'])): ?>
             <li><a href="./store.php">Store</a></li>
             <li><a href="cart_page.php">Cart (<span id="cart-count-about"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></span>)</a></li>
-            <li><a href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?>)</a></li>
+            <li><a href="logout.php">Logout</a></li>
           <?php else: ?>
             <li><a href="./store.php" class="button buy-now-button">Buy now</a></li>
           <?php endif; ?>
@@ -44,10 +43,9 @@ session_start(); // ADD THIS LINE
         <ul>
           <li><a href="./index.php">Prism Jewellery</a></li>
           <li><a href="./about-us.php">About Us</a></li>
-          <li><a href="https://www.instagram.com/">Follow Us</a></li>
           <?php if (isset($_SESSION['user_id'])): ?>
             <li><a href="./store.php">Store</a></li>
-            <li><a href="cart_page.php">Cart (<span id="cart-count-mobile-about"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></span>)</a></li> 
+            <li><a href="cart_page.php">Cart (<span id="cart-count-mobile-about"><?php echo array_sum(array_column($_SESSION['cart'] ?? [], 'quantity')); ?></span>)</a></li>
             <li><a href="logout.php" class="button">Logout</a></li>
           <?php else: ?>
             <li><a href="./store.php" class="button buy-now-button">Buy now</a></li>

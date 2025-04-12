@@ -1,4 +1,4 @@
-/***************************  Universal Styles ************************************/
+/*************************** Universal Styles ************************************/
 :root {
   --primary-color: #f3eae5;
   --text-dark: #2c2724;
@@ -11,7 +11,7 @@ html {
   font-size: 16px;
 }
 
-/**************************  CSS for Landing page  ********************************/
+/************************** CSS for Landing page  ********************************/
 .main-content {
   position: relative;
   top: 5.3125rem; /* To offset for fixed header. */
@@ -25,6 +25,8 @@ html {
   border-radius: 4px;
   background-color: var(--text-dark);
   color: var(--primary-color);
+  cursor: pointer; /* Add pointer cursor to all buttons */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Default transition */
 }
 
 .image-container {
@@ -32,7 +34,7 @@ html {
 }
 
 .image-container img {
-  /* made the images themselves in the imgae-container to be inline-flex so they can 
+  /* made the images themselves in the imgae-container to be inline-flex so they can
   display on the same line*/
   display: inline-flex;
 
@@ -103,8 +105,8 @@ header .mobile {
 .buy-now-button:hover {
   background-color: var(--primary-color); /* Example hover from login button */
   color: var(--text-dark);
-  border-color: var(--text-dark); /* If you add a border */
-  transition: 0.5s;
+  /* border-color: var(--text-dark); */ /* Uncomment if you add a border */
+  transition: 0.5s; /* Keep specific transition if needed */
 }
 
 /* Sign Up Section */
@@ -165,10 +167,21 @@ header .mobile {
 }
 
 #sign-up-cta .button {
+  /* Targets the "Email us now!" button */
   margin-top: 1.625rem;
   padding: 1.25rem 7.25rem;
   border-radius: 6rem;
+  /* Inherits base styles from .button */
 }
+
+/* --- NEW HOVER EFFECT for Email Button --- */
+#sign-up-cta .button:hover {
+  background-color: var(--primary-color); /* Light background on hover */
+  color: var(--text-dark); /* Dark text on hover */
+  /* Optional: Add border style if desired */
+  /* border: 1px solid var(--text-dark); */
+}
+/* --- END NEW HOVER EFFECT --- */
 
 /* Features Section */
 
@@ -359,8 +372,8 @@ footer .copyright {
   }
 
   #sign-up-cta {
-    /* changes the margin to auto for the sign-up section when the screen size is smaller. 
-    This will cause the text 'Prism Jewellery' in the sign-up section to be in the center 
+    /* changes the margin to auto for the sign-up section when the screen size is smaller.
+    This will cause the text 'Prism Jewellery' in the sign-up section to be in the center
     of the screen when the screen size is reduced  */
     margin: auto;
 
@@ -376,9 +389,8 @@ footer .copyright {
   }
 
   #sign-up-cta .email {
-    display: none;
+    display: none; /* Hide email section on mobile as it uses prompt */
   }
-
 
   #sign-up-cta h1 {
     font-size: 3.125rem;
@@ -551,13 +563,14 @@ input[type="submit"] {
   font-weight: 700;
   cursor: pointer;
   outline: none;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Added transition */
 }
 
 input[type="submit"]:hover {
   background-color: var(--primary-color);
   color: var(--text-dark);
   border-color: var(--text-dark);
-  transition: 0.5s;
+  /* transition: 0.5s; */ /* Inherit transition */
 }
 
 .singup_link {
@@ -598,12 +611,13 @@ body {
 .login-container,
 .about-section,
 .confirmation-container,
-.main-content, /* Target homepage main content too */ 
+.main-content, /* Target homepage main content too */
 .cart-page-container {
+  /* Added cart page container */
   flex-grow: 1;
 }
 
-/* Style for the tick mark shown after adding to cart */
+/* Style for the tick mark shown after adding to cart (if used) */
 .added-tick {
   color: #28a745; /* Green color for success */
   font-weight: bold;
@@ -620,61 +634,13 @@ body {
   cursor: not-allowed;
 }
 
-/* Container for button OR quantity selector */
+/* Container for button OR quantity selector on Store Page */
 .cart-interaction {
   margin-top: auto; /* Pushes button to the bottom IF the card has extra space */
+  text-align: center; /* Center button/selector */
 }
 
-/* Styles for the quantity selector: - 1 + */
-.quantity-selector {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-top: 0.5rem; /* Ensure consistent spacing */
-}
-
-.quantity-selector button {
-  background-color: #f8f8f8;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-  line-height: 1;
-  padding: 0.5rem 0.9rem;
-  font-weight: bold;
-  color: #555;
-}
-
-.quantity-selector button:hover {
-  background-color: #eee;
-  
-}
-
-.quantity-selector .qty-display {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  min-width: 25px;
-  text-align: center;
-  font-weight: bold;
-  background-color: var(--text-dark);
-  color: var(--primary-color);
-}
-
-/* .qty-display {
-  
-} */
-
-.quantity-selector .minus-btn {
-  /* border-right: 1px solid #ccc; Separator line */
-  border-radius: 4px 0 0 4px; /* Round left corners */
-}
-
-.quantity-selector .plus-btn {
-  /* border-left: 1px solid #ccc; Separator line */
-  border-radius: 0 4px 4px 0; /* Round right corners */
-}
-
-/* Ensure original button aligns well */
+/* Styles for Add to Cart Button on Store Page */
 .add-to-cart-btn {
   display: inline-block; /* Make it inline-block */
   padding: 0.6rem 1.2rem; /* Adjust padding */
@@ -687,6 +653,11 @@ body {
   transition: background-color 0.3s ease;
   width: auto; /* Adjust width automatically */
   margin-top: 0.5rem; /* Ensure some space above the button */
+  height: 36px; /* Example height - match selector */
+  line-height: calc(
+    36px - 1.2rem
+  ); /* Adjust line-height for vertical centering */
+  box-sizing: border-box;
 }
 
 .add-to-cart-btn:hover {
@@ -698,3 +669,87 @@ body {
   opacity: 0.5;
   pointer-events: none; /* Prevent clicks during processing */
 }
+
+/* ================================================= */
+/* === Styles for Store Page Quantity Selector === */
+/* === (Adapted from cart_style.css)           === */
+/* ================================================= */
+
+/* Container for the counter (+ / - / number) */
+/* Using quantity-selector class now */
+.quantity-selector {
+  display: inline-flex; /* Use flex */
+  align-items: center; /* Align items vertically center */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  height: 36px; /* Define fixed height - Match button height */
+  overflow: hidden; /* Hide overflow */
+  width: fit-content; /* Make the container only as wide as its content */
+  vertical-align: middle; /* Align with button if needed */
+}
+
+/* Minus button */
+.quantity-selector .minus-btn {
+  background-color: #f8f8f8;
+  border: none;
+  border-right: 1px solid #ccc; /* Separator */
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0 12px;
+  height: 100%;
+  color: #555;
+  display: flex; /* Added for centering */
+  align-items: center; /* Added for centering */
+  justify-content: center; /* Added for centering */
+  box-sizing: border-box;
+}
+.quantity-selector .minus-btn:hover {
+  background-color: #eee;
+}
+.quantity-selector .minus-btn:disabled {
+  background-color: #f0f0f0; /* Lighter grey when disabled */
+  color: #bbb;
+  cursor: not-allowed;
+  border-color: #ddd; /* Lighter border */
+}
+
+/* Plus button */
+.quantity-selector .plus-btn {
+  background-color: #f8f8f8;
+  border: none;
+  border-left: 1px solid #ccc; /* Separator */
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0 12px;
+  height: 100%;
+  color: #555;
+  display: flex; /* Added for centering */
+  align-items: center; /* Added for centering */
+  justify-content: center; /* Added for centering */
+  box-sizing: border-box;
+}
+.quantity-selector .plus-btn:hover {
+  background-color: #eee;
+}
+
+/* Quantity display */
+.quantity-selector .qty-display {
+  padding: 0 15px;
+  font-size: 0.9rem;
+  text-align: center;
+  font-weight: bold;
+  background-color: var(--text-dark);
+  height: 100%;
+  display: flex; /* Use flex to center */
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
+  color: var(--primary-color);
+  min-width: 25px; /* Ensure some width */
+  box-sizing: border-box; /* Include padding/border in height */
+  line-height: normal; /* Reset line-height */
+}
+
+/* ================================================= */
+/* === END Styles for Store Page Quantity Selector === */
+/* ================================================= */

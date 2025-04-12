@@ -252,7 +252,7 @@ elseif (isset($_SESSION['cart_message'])) {
                     <li><a href="./store.php">Store</a></li>
                     <li><a href="cart_page.php">Cart (<span id="cart-count"><?php echo $cartCount; ?></span>)</a></li>
                     <?php if ($loggedIn): ?>
-                        <li><a href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?>)</a></li>
+                        <li><a href="logout.php">Logout</a></li>
                     <?php else: ?>
                         <li><a href="login.php">Login</a></li>
                     <?php endif; ?>
