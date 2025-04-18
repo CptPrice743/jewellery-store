@@ -179,8 +179,9 @@ if (isset($_SESSION['cart'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prism Jewellery Store</title>
     <link rel="stylesheet" href="./resources/css/reset.css">
+    <link rel="stylesheet" href="./resources/css/style.css">
+    <link rel="stylesheet" href="./resources/css/store.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
@@ -379,10 +380,6 @@ if (isset($_SESSION['cart'])) {
             <span class="location">Designed by Vyom Uchat (22BCP450)</span>
         </div>
     </footer>
-    <link rel="stylesheet" href="./resources/css/style.css">
-    <link rel="stylesheet" href="./resources/css/universal.css">
-    <link rel="stylesheet" href="./resources/css/store_page_interactions.css">
-    <link rel="stylesheet" href="./resources/css/responsive.css">
 
     <script src="resources/js/cart.js"></script>
     <script>
