@@ -15,7 +15,9 @@ session_start();
   <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
     rel="stylesheet" />
-  <link rel="stylesheet" href="./resources/css/style.css">
+  <link rel="stylesheet" href="./resources/css/universal.css">
+  <link rel="stylesheet" href="./resources/css/landing.css">
+  <link rel="stylesheet" href="./resources/css/responsive.css">
 
   <meta charset="UTF-8">
 </head>

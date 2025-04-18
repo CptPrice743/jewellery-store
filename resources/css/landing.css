@@ -1,0 +1,144 @@
+/************************** CSS for Landing page  ********************************/
+  body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#branding {
+    font-size: 1.5rem;
+}
+
+nav ul {
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+
+nav li {
+    margin: 0 10px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+#showcase {
+    background-image: url('../images/banner-landingpage.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+    margin-top: 60px;
+}
+
+#showcase h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+#showcase p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: #666;
+}
+
+#newsletter {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+}
+
+#newsletter .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#newsletter input[type="email"] {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+#newsletter .button_1 {
+    padding: 8px 15px;
+    color: #fff;
+    background-color: #e8491d;
+    border: none;
+    border-radius: 5px;
+}
+
+#boxes {
+    padding: 2rem 0;
+}
+
+.box {
+    float: left;
+    width: 30%;
+    padding: 10px;
+    text-align: center;
+}
+
+.box img {
+    width: 90px;
+}
+
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.active {
+    text-decoration: underline;
+}
+/* --- END NEW HOVER EFFECT --- */
