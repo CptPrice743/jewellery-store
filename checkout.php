@@ -1,182 +1,120 @@
 <?php
 session_start();
 
-// Redirect if cart is empty or user not logged in
-// Use session cart check primarily, as DB cart might exist but shouldn't proceed
-if (empty($_SESSION['cart']) || !isset($_SESSION['user_id'])) {
-    header("Location: store.php"); // Redirect to store or cart page if appropriate
+// Redirect if not logged in or cart is empty
+if (!isset($_SESSION['user_id']) || empty($_SESSION['cart'])) {
+    header("Location: login.php"); // Or cart_page.php if cart is empty
     exit();
 }
 
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "vyom0403"; // <-- CORRECTED PASSWORD
-$dbname = "jewellery_store";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    // Log the error and redirect with a generic message
-    error_log("Checkout DB Connection failed: " . $conn->connect_error);
-    // Redirect to cart page with an error - consider a more user-friendly way
-    header("Location: cart_page.php?error=db_connection_failed");
-    exit();
-}
-$conn->set_charset("utf8mb4"); // Good practice
-
-$userId = $_SESSION['user_id'];
-$cartItemsData = [];
-$cartSubtotal = 0; // Use 'subtotal' as it's before taxes/fees
-
-// --- Re-fetch product data to ensure prices are current ---
-$productIds = array_keys($_SESSION['cart']);
-
-// Ensure product IDs are valid integers before using in query
-$sanitizedProductIds = array_map('intval', $productIds);
-$validProductIds = array_filter($sanitizedProductIds, function ($id) {
-    return $id > 0;
-});
-
-if (empty($validProductIds)) {
-    // Cart was technically not empty in session, but contained invalid IDs
-    unset($_SESSION['cart']); // Clear the invalid session cart
-    $conn->close();
-    header("Location: cart_page.php?error=invalid_cart_items");
-    exit();
-}
-
-$ids_string = implode(',', $validProductIds);
-$sql = "SELECT product_id, price FROM products WHERE product_id IN ($ids_string)";
-$result = $conn->query($sql);
-
-if (!$result) {
-    error_log("Failed to fetch product prices in checkout: " . $conn->error);
-    $conn->close();
-    header("Location: cart_page.php?error=price_fetch_failed");
-    exit();
-}
-
-$productsData = [];
-while ($row = $result->fetch_assoc()) {
-    $productsData[$row['product_id']] = $row;
-}
-
-// Calculate total and prepare order items, ensuring product exists
-foreach ($_SESSION['cart'] as $productId => $item) {
-    $productIdInt = (int)$productId; // Ensure integer key
-    if (isset($productsData[$productIdInt])) {
-        $price = $productsData[$productIdInt]['price'];
-        $quantity = isset($item['quantity']) ? (int)$item['quantity'] : 0;
-
-        if ($quantity <= 0) { // Ignore items with zero or negative quantity
-            unset($_SESSION['cart'][$productId]); // Remove invalid item from session
-            continue; // Skip this item
+// Calculate total (assuming cart items have prices)
+$total_price = 0;
+if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $item) {
+        // Ensure price and quantity are numeric and exist
+        if (isset($item['price']) && is_numeric($item['price']) && isset($item['quantity']) && is_numeric($item['quantity'])) {
+             $total_price += $item['price'] * $item['quantity'];
         }
-
-        $cartItemsData[] = [
-            'product_id' => $productIdInt,
-            'quantity' => $quantity,
-            'price_at_purchase' => $price
-        ];
-        $cartSubtotal += $price * $quantity;
-    } else {
-        // Handle error: product in cart not found in DB or removed
-        unset($_SESSION['cart'][$productId]); // Remove invalid item from session
-        // Consider adding a message to the user, but redirecting is simpler for now
-        error_log("Product ID $productId found in session cart but not in DB during checkout for user $userId.");
-        // We don't redirect immediately, let the process continue with valid items
-        // If $cartItemsData becomes empty after this loop, we handle it below.
     }
 }
 
-// If after validation, there are no valid items left to order
-if (empty($cartItemsData)) {
-    $conn->close();
-    header("Location: cart_page.php?error=no_valid_items");
-    exit();
-}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Natural Diamonds</title>
+    <link rel="stylesheet" href="resources/css/reset.css">
+    <link rel="stylesheet" href="resources/css/style.css"> <!-- Main styles -->
+    <link rel="stylesheet" href="resources/css/checkout.css"> <!-- Checkout specific styles -->
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-content">
+            <a href="index.php" class="logo">
+                <img src="resources/images/Natural_Diamonds_logo_cropped.png" alt="Natural Diamonds Logo">
+            </a>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="store.php">Store</a></li>
+                    <li><a href="about-us.php">About Us</a></li>
+                    <li><a href="cart_page.php">Cart</a></li>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li><a href="logout.php">Logout</a></li>
+                    <?php else: ?>
+                        <li><a href="login.php">Login</a></li>
+                        <li><a href="signup.php">Sign Up</a></li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-// --- Apply Coupon / Calculate Final Total (fetch from session if stored) ---
-// It's generally safer to recalculate totals here based on fetched prices
-// and validated cart items, rather than relying solely on session totals.
-// This example uses the subtotal calculated above. You might need to add
-// logic here to re-apply coupons, calculate tax, shipping based on $cartSubtotal
-// if you want the *exact* final amount stored in the order.
-// For simplicity, this example uses the $cartSubtotal.
-$orderTotalAmount = $cartSubtotal; // Or recalculate full total including tax/fees/discount
+    <main class="checkout-page container">
+        <h1>Checkout</h1>
 
-// --- Insert Order into Database ---
-$conn->begin_transaction(); // Start transaction
+        <div class="checkout-content">
+            <section class="shipping-details">
+                <h2>Shipping Information</h2>
+                <form action="order_confirmation.php" method="post" id="checkout-form">
+                    <div class="form-group">
+                        <label for="fullname">Full Name:</label>
+                        <input type="text" id="fullname" name="fullname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="zipcode">Zip Code:</label>
+                        <input type="text" id="zipcode" name="zipcode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country:</label>
+                        <input type="text" id="country" name="country" required>
+                    </div>
+                </form>
+            </section>
 
-try {
-    // 1. Insert into 'orders' table
-    // Add more fields like shipping_address, discount_amount, tax_amount etc. if collected/calculated
-    $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, ?)");
-    if (!$stmt) {
-        throw new Exception("Prepare failed (orders): " . $conn->error);
-    }
-    $status = 'Pending'; // Initial status
-    // Use the calculated $orderTotalAmount
-    $stmt->bind_param("ids", $userId, $orderTotalAmount, $status);
-    if (!$stmt->execute()) {
-        throw new Exception("Execute failed (orders): " . $stmt->error);
-    }
-    $orderId = $conn->insert_id; // Get the ID of the inserted order
-    $stmt->close();
+            <section class="order-summary">
+                <h2>Order Summary</h2>
+                <div class="summary-details">
+                    <!-- Ideally, list items here, but for simplicity, just show total -->
+                    <p>Total Items: <?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?></p>
+                    <p>Total Price: $<?php echo number_format($total_price, 2); ?></p>
+                </div>
+                 <div class="payment-placeholder">
+                    <h2>Payment Method</h2>
+                    <p>Payment processing is not implemented in this demo.</p>
+                    <p>Click "Place Order" to simulate order completion.</p>
+                 </div>
+            </section>
+        </div>
 
-    if (!$orderId) {
-        throw new Exception("Failed to create order record (no insert ID).");
-    }
+        <div class="checkout-actions">
+             <button type="submit" form="checkout-form" class="btn btn-primary">Place Order</button>
+        </div>
 
-    // 2. Insert into 'order_items' table
-    $stmt = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES (?, ?, ?, ?)");
-    if (!$stmt) {
-        throw new Exception("Prepare failed (order_items): " . $conn->error);
-    }
-    foreach ($cartItemsData as $item) {
-        $stmt->bind_param("iiid", $orderId, $item['product_id'], $item['quantity'], $item['price_at_purchase']);
-        if (!$stmt->execute()) {
-            throw new Exception("Execute failed (order_items) for product ID {$item['product_id']}: " . $stmt->error);
-        }
-        // Optional: Reduce stock in 'products' table here (requires another query)
-    }
-    $stmt->close();
+    </main>
 
-    // --- ADDED SECTION ---
-    // 3. Clear the user's persistent cart from the database
-    $stmt_clear_db_cart = $conn->prepare("DELETE FROM user_carts WHERE user_id = ?");
-    if (!$stmt_clear_db_cart) {
-        throw new Exception("Failed to prepare statement for clearing database cart: " . $conn->error);
-    }
-    $stmt_clear_db_cart->bind_param("i", $userId);
-    if (!$stmt_clear_db_cart->execute()) {
-        throw new Exception("Failed to execute statement for clearing database cart: " . $stmt_clear_db_cart->error);
-    }
-    $stmt_clear_db_cart->close();
-    // --- END OF ADDED SECTION ---
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; <?php echo date("Y"); ?> Natural Diamonds. All rights reserved.</p>
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="store.php">Store</a></li>
+                    <li><a href="about-us.php">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
 
-    // 4. Clear the cart session (This should be done AFTER DB clear)
-    unset($_SESSION['cart']);
-    // Optional: Unset related total variables if they exist
-    unset($_SESSION['cart_subtotal'], $_SESSION['cart_discount_amount'], $_SESSION['cart_tax_amount'], $_SESSION['cart_final_total'], $_SESSION['applied_coupon']);
-
-
-    // 5. Commit transaction
-    $conn->commit();
-
-    // 6. Redirect to Order Confirmation page
-    header("Location: order_confirmation.php?order_id=" . $orderId);
-    exit();
-} catch (Exception $e) {
-    $conn->rollback(); // Rollback changes on error
-    // Log the error
-    error_log("Order placement failed for user $userId: " . $e->getMessage());
-    // Redirect back to cart with a generic error message
-    header("Location: cart_page.php?error=order_failed");
-    exit();
-} finally {
-    // Ensure connection is always closed
-    if ($conn) {
-        $conn->close();
-    }
-}
+</body>
+</html>

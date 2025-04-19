@@ -1,0 +1,168 @@
+/* Checkout Page Specific Styles */
+
+.checkout-page .container {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.checkout-page h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    color: #333;
+    font-weight: 300;
+}
+
+.checkout-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; /* Spacing between sections */
+    justify-content: space-between;
+}
+
+.shipping-details,
+.order-summary {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    flex: 1; /* Allow sections to grow */
+    min-width: 300px; /* Minimum width before wrapping */
+}
+
+.shipping-details {
+   flex-basis: 55%; /* Give shipping details more space initially */
+}
+
+.order-summary {
+    flex-basis: 35%;
+}
+
+.shipping-details h2,
+.order-summary h2 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    font-weight: 400;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #666;
+}
+
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    font-size: 1em;
+}
+
+.form-group input[type="text"]:focus {
+    border-color: #80bdff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Order Summary Details */
+.summary-details p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.summary-details p:last-child {
+    margin-bottom: 0;
+}
+
+.summary-details p:first-child {
+    font-weight: 500;
+}
+
+.payment-placeholder {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.payment-placeholder h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.payment-placeholder p {
+    color: #6c757d;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* Checkout Actions */
+.checkout-actions {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.btn.btn-primary {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    background-color: #007bff; /* Primary button color from style.css */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.btn.btn-primary:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .checkout-content {
+        flex-direction: column;
+    }
+
+    .shipping-details,
+    .order-summary {
+        flex-basis: 100%; /* Stack sections */
+        margin-bottom: 30px;
+    }
+
+    .order-summary {
+        margin-bottom: 0; /* No margin for the last element */
+    }
+
+    .checkout-page h1 {
+        font-size: 2em;
+    }
+
+    .shipping-details h2,
+    .order-summary h2 {
+        font-size: 1.5em;
+    }
+
+    .btn.btn-primary {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1em;
+    }
+}
